@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">EasyTimesheet</string>
+    <string name="textViewInstruction">Please scan your QR code</string>
+    <string name="textViewInstructionOr">Or</string>
+    <string name="textViewInstructionQR">Please enter your code</string>
+    <string name="signInButtonCode">Enter your code</string>
+    <string name="signInButtonQR">Scan QR code</string>
+    <string name="codeTyped"></string>
+    <string name="adminLoginTitle">Admin Login</string>
+    <string name="adminUsername">Username:</string>
+    <string name="adminPassword">Password:</string>
+    <string name="adminLoginButton">Login</string>
+    <string name="adminControlsTitle">Admin</string>
+    <string name="adminControlsCurrentEmployees">Current Employees</string>
+    <string name="adminControlsNewEmployee">New Employee</string>
+    <string name="adminControlsEndOfMonthHours">End-Of-Month Hours</string>
+</resources>
