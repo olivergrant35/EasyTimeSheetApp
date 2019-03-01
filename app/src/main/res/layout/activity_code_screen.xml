@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editText2" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonScanQRCode"
         android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"

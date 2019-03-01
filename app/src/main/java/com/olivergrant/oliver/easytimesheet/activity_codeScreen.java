@@ -12,12 +12,12 @@ public class activity_codeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_code_screen);
 
-        final Button buttonChangeSignInMethod = findViewById(R.id.buttonChangeSignInMethod);
+        final Button buttonChangeSignInMethod = findViewById(R.id.buttonScanQRCode);
         buttonChangeSignInMethod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: Check how to go back to previous activity.
-                //finishActivity(0);
+                finish();
             }
         });
     }
