@@ -13,6 +13,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -20,8 +21,8 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.Date;
 
-@SuppressWarnings("deprecation")
 public class Homepage extends AppCompatActivity {
 
 
@@ -31,6 +32,8 @@ public class Homepage extends AppCompatActivity {
 
     TextView textViewStatus;
 
+    Employee empl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,7 @@ public class Homepage extends AppCompatActivity {
         surfaceView = (SurfaceView) findViewById(R.id.cameraPreview);
         textViewStatus = (TextView) findViewById(R.id.textViewStatusUpdate);
 
+        empl = new Employee("Oliver", "Grant", DataController.NewEmployeeCode());
         startScanning();
 
         //Getting that buttons
@@ -96,11 +100,21 @@ public class Homepage extends AppCompatActivity {
 
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
-                SparseArray<Barcode> qrCodes = detections.getDetectedItems();
+                final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
 
                 if(qrCodes.size() !=0){
                     Log.d("QRCodes", qrCodes.valueAt(0).displayValue);
-                    ((TextView)findViewById(R.id.textViewStatusUpdate)).setText(qrCodes.valueAt(0).displayValue);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            textViewStatus.setText(qrCodes.valueAt(0).displayValue);
+                        }
+                    });
+                    //TODO: Need to create a database of employees and check the code scan against it.
+                    //TODO: Check if they have had a clock in already, if so, clock out. Need to consider multiple clocking in a day.
+                    if(qrCodes.valueAt(0).displayValue.equals(empl.getEmployeeCode())){
+                        empl.addClockTime(ClockType.ClockIn);
+                    }
                 }
             }
         });
