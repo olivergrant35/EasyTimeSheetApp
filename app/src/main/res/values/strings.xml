@@ -14,5 +14,6 @@
     <string name="adminControlsCurrentEmployees">Current Employees</string>
     <string name="adminControlsNewEmployee">New Employee</string>
     <string name="adminControlsEndOfMonthHours">End-Of-Month Hours</string>
+    <string name="goButton">Go</string>
     <string name="TestText">TestText</string>
 </resources>

@@ -9,6 +9,7 @@ public class Employee {
     private String Surname;
     private String EmployeeCode;
     private String Fullname;
+    private Boolean IsAdmin;
     private Map<Date, ClockType> ClockTimes;
 
     public Employee(String firstName, String surname, String employeeCode) {

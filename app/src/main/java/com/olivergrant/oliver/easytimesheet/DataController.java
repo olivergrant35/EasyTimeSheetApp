@@ -1,6 +1,16 @@
 package com.olivergrant.oliver.easytimesheet;
 
+import java.util.ArrayList;
+
 public class DataController {
+
+    public static ArrayList<Employee> employees = new ArrayList<>();
+
+    public static void CreateEmployee(){
+        if(employees.size() == 0)
+            employees.add(new Employee("Oliver", "Grant", DataController.NewEmployeeCode()));
+    }
+
     public static String NewEmployeeCode(){
         //TODO: Need to check the last employee code, increment by 1 and return that.
         return "0004";

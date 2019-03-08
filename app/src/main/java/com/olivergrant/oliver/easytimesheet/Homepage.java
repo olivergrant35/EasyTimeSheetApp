@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,20 +30,17 @@ public class Homepage extends AppCompatActivity {
     SurfaceView surfaceView;
     CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
-
     TextView textViewStatus;
-
-    Employee empl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         //TODO: Camera get instance as i enabled it in phone permissions. Need to make it so it requests permission.
-        surfaceView = (SurfaceView) findViewById(R.id.cameraPreview);
-        textViewStatus = (TextView) findViewById(R.id.textViewStatusUpdate);
+        surfaceView = findViewById(R.id.cameraPreview);
+        textViewStatus = findViewById(R.id.textViewStatusUpdate);
 
-        empl = new Employee("Oliver", "Grant", DataController.NewEmployeeCode());
+        DataController.CreateEmployee();
         startScanning();
 
         //Getting that buttons
@@ -103,20 +101,29 @@ public class Homepage extends AppCompatActivity {
                 final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
 
                 if(qrCodes.size() !=0){
-                    Log.d("QRCodes", qrCodes.valueAt(0).displayValue);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            textViewStatus.setText(qrCodes.valueAt(0).displayValue);
-                        }
-                    });
+                    if(qrCodes.valueAt(0).displayValue.length() == 4){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textViewStatus.setText(qrCodes.valueAt(0).displayValue);
+                            }
+                        });
+                    }else{
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //TODO: Make it display "Invalid login".
+                            }
+                        });
+                    }
                     //TODO: Need to create a database of employees and check the code scan against it.
                     //TODO: Check if they have had a clock in already, if so, clock out. Need to consider multiple clocking in a day.
-                    if(qrCodes.valueAt(0).displayValue.equals(empl.getEmployeeCode())){
-                        empl.addClockTime(ClockType.ClockIn);
+                    if(qrCodes.valueAt(0).displayValue.equals(DataController.employees.get(0).getEmployeeCode())){
+                        DataController.employees.get(0).addClockTime(ClockType.ClockIn);
                     }
                 }
             }
         });
     }
 }
+
