@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 public class DataController {
 
-    public static ArrayList<Employee> employees = new ArrayList<>();
+    private static ArrayList<Employee> employees = new ArrayList<>();
+
+    public static ArrayList<Employee> getEmployees() {
+        return employees;
+    }
 
     public static void CreateEmployee(){
         if(employees.size() == 0)

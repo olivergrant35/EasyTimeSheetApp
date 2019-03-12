@@ -1,13 +1,25 @@
 package com.olivergrant.oliver.easytimesheet;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class DatabaseController {
 
-    String connectionURL = "jdbc:sqlserver://";
+    private FirebaseDatabase database;
+    private String TAG = "DatabaseControllerError";
 
-   //Connection con = DriverManager.getConnection("")
+    public DatabaseController() {
+        this.database = FirebaseDatabase.getInstance();
+    }
+
+    public void writeNewEmployee(Employee emp){
+        database.getReference().child("employees").child(emp.getEmployeeCode()).setValue(emp);
+    }
 
 }
