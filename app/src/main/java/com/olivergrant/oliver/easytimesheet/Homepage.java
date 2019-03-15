@@ -1,11 +1,10 @@
 package com.olivergrant.oliver.easytimesheet;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +22,6 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
-import java.util.Date;
 
 public class Homepage extends AppCompatActivity {
 
@@ -32,6 +30,7 @@ public class Homepage extends AppCompatActivity {
     BarcodeDetector barcodeDetector;
     TextView textViewStatus;
     DatabaseController dbController;
+    String TAG = "HomepageTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class Homepage extends AppCompatActivity {
         textViewStatus = findViewById(R.id.textViewStatusUpdate);
 
         dbController = new DatabaseController();
-        dbController.writeNewEmployee(new Employee("Oliver", "Grant", "0004"));
+        //dbController.WriteNewEmployee(new Employee("Oliver", "Grant", "0004"));
         startScanning();
 
         //Getting that buttons
@@ -120,8 +119,12 @@ public class Homepage extends AppCompatActivity {
                     }
                     //TODO: Need to create a database of employees and check the code scan against it.
                     //TODO: Check if they have had a clock in already, if so, clock out. Need to consider multiple clocking in a day.
-                    if(qrCodes.valueAt(0).displayValue.equals(DataController.getEmployees().get(0).getEmployeeCode())){
-                        DataController.getEmployees().get(0).addClockTime(ClockType.ClockIn);
+                    String code = qrCodes.valueAt(0).displayValue;
+                    Employee emp = dbController.FindEmployeeByCode(code);
+                    if(emp != null){
+                        Log.d(TAG, "Employee has been found");
+                    }else{
+                        Log.d(TAG, "Employee not found");
                     }
                 }
             }

@@ -3,7 +3,8 @@
     package="com.olivergrant.oliver.easytimesheet">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <application
@@ -22,8 +23,13 @@
         </activity>
         <activity android:name=".activity_codeScreen" />
         <activity android:name=".activity_AdminLogin" />
-        <activity android:name=".activityAdminControls"></activity>
-        <meta-data android:name="com.google.android.gms.version.DEPENDENCIES" android:value="barcode"></meta-data>
+        <activity android:name=".activityAdminControls" />
+
+        <meta-data
+            android:name="com.google.android.gms.version.DEPENDENCIES"
+            android:value="barcode" />
+
+        <activity android:name=".New_Employee"></activity>
     </application>
 
 </manifest>

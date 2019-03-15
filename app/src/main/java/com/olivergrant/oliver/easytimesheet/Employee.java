@@ -12,13 +12,19 @@ public class Employee {
     private Boolean IsAdmin;
     private Map<Date, ClockType> ClockTimes;
 
+    public Employee(){
+
+    }
+
     public Employee(String firstName, String surname, String employeeCode) {
         FirstName = firstName;
         Surname = surname;
         EmployeeCode = employeeCode;
         Fullname = firstName + " " + surname + " ";
+        IsAdmin = false;
     }
 
+    //TODO: Employee code needs to be uniquely generated with a QR code.
     public String getEmployeeCode() {
         return EmployeeCode;
     }
@@ -34,5 +40,21 @@ public class Employee {
     public void addClockTime(ClockType clockType) {
         Date date = new Date();
         ClockTimes.put(date, clockType);
+    }
+
+    public String getFirstName() {
+        return FirstName;
+    }
+
+    public String getSurname() {
+        return Surname;
+    }
+
+    public Boolean getAdmin() {
+        return IsAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        IsAdmin = admin;
     }
 }
