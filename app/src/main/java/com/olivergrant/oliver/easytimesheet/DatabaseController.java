@@ -18,6 +18,7 @@ public class DatabaseController {
     private String TAG = "DatabaseControllerError";
 
     private List<Employee> employeeList;
+    private Employee testEmp;
 
     public DatabaseController() {
         this.database = FirebaseDatabase.getInstance();
@@ -31,6 +32,7 @@ public class DatabaseController {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 employeeList.clear();
+                testEmp = dataSnapshot.getValue(Employee.class);
                 for(DataSnapshot employeeSnapshot : dataSnapshot.getChildren()){
                     //TODO: employee returns as the object but all properties are null. Fix this.
                         Employee employee = employeeSnapshot.getValue(Employee.class);

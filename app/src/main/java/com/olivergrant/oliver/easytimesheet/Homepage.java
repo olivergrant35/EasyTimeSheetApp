@@ -41,7 +41,7 @@ public class Homepage extends AppCompatActivity {
         textViewStatus = findViewById(R.id.textViewStatusUpdate);
 
         dbController = new DatabaseController();
-        //dbController.WriteNewEmployee(new Employee("Oliver", "Grant", "0004"));
+        //dbController.WriteNewEmployee(new Employee("Admin", "Admin", "0005"));
         startScanning();
 
         //Getting that buttons
@@ -117,11 +117,21 @@ public class Homepage extends AppCompatActivity {
                             }
                         });
                     }
-                    //TODO: Need to create a database of employees and check the code scan against it.
-                    //TODO: Check if they have had a clock in already, if so, clock out. Need to consider multiple clocking in a day.
+                    //TODO: Need to create a database of employees and check the code scan against it. SHOULD BE DONE. TEST.
+                    //TODO: Check if they have had a clock in already, if so, clock out. Need to consider multiple clocking in a day. SHOULD BE DONE, TEST MULTIPLE SAME DAY.
                     String code = qrCodes.valueAt(0).displayValue;
                     Employee emp = dbController.FindEmployeeByCode(code);
+                    //Make sure employee was found, if so check their last clocktype and then add new one accordingly.
                     if(emp != null){
+                        if(emp.getAdmin()){
+                            //TODO: Need to make it so it will only open once, atm opens multiple times.
+                            startActivity(new Intent(Homepage.this, activityAdminControls.class));
+                            return;
+                        }
+                        if(emp.getCurrentClockType() == ClockType.ClockIn)
+                            emp.addClockTime(ClockType.ClockOut);
+                        else
+                            emp.addClockTime(ClockType.ClockIn);
                         Log.d(TAG, "Employee has been found");
                     }else{
                         Log.d(TAG, "Employee not found");
