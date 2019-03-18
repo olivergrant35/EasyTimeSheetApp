@@ -57,12 +57,19 @@ public class DatabaseController {
     }
 
     public void WriteNewEmployee(Employee emp){
-        employeesRef.child(emp.getEmployeeCode()).setValue(emp);
+        String key = employeesRef.push().getKey();
+        employeesRef.child(key).setValue(emp);
     }
 
     public String NewEmployeeCode(){
         //TODO: Need to check the last employee code, increment by 1 and return that.
-        return "0004";
+        int c = 1000;
+        for (Employee emp: employeeList) {
+            if(Integer.parseInt(emp.getEmployeeCode()) >= c){
+                c = Integer.parseInt(emp.getEmployeeCode());
+            }
+        }
+        return Integer.toString(c);
     }
 
     public void SetEmployeeAdmin(Employee emp, boolean isAdmin){

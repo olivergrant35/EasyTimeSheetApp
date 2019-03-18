@@ -16,14 +16,16 @@ public class Employee {
     private ClockType currentClockType;
     private Map<String, ClockType> ClockTimes = new HashMap<>();
 
+    private DatabaseController db = new DatabaseController();
+
     public Employee(){
 
     }
 
-    public Employee(String firstName, String surname, String employeeCode) {
+    public Employee(String firstName, String surname) {
         FirstName = firstName;
         Surname = surname;
-        EmployeeCode = employeeCode;
+        EmployeeCode = db.NewEmployeeCode();
         Fullname = firstName + " " + surname + " ";
         IsAdmin = false;
     }

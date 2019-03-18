@@ -31,6 +31,7 @@ public class Homepage extends AppCompatActivity {
     TextView textViewStatus;
     DatabaseController dbController;
     String TAG = "HomepageTAG";
+    Boolean activityOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,8 @@ public class Homepage extends AppCompatActivity {
         textViewStatus = findViewById(R.id.textViewStatusUpdate);
 
         dbController = new DatabaseController();
-        //dbController.WriteNewEmployee(new Employee("Admin", "Admin", "0005"));
+        //dbController.WriteNewEmployee(new Employee("Admin", "Admin"));
+        //dbController.WriteNewEmployee(new Employee("Oliver", "Grant"));
         startScanning();
 
         //Getting that buttons
@@ -73,6 +75,7 @@ public class Homepage extends AppCompatActivity {
                 if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
+                activityOpen = false;
                 try {
                     cameraSource.start(holder);
                 } catch (IOException e) {
@@ -125,7 +128,9 @@ public class Homepage extends AppCompatActivity {
                     if(emp != null){
                         if(emp.getAdmin()){
                             //TODO: Need to make it so it will only open once, atm opens multiple times.
-                            startActivity(new Intent(Homepage.this, activityAdminControls.class));
+                            if(!activityOpen)
+                                activityOpen = true;
+                                startActivity(new Intent(Homepage.this, activityAdminControls.class));
                             return;
                         }
                         if(emp.getCurrentClockType() == ClockType.ClockIn)
