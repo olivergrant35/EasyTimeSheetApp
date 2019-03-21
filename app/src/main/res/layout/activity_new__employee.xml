@@ -31,7 +31,7 @@
     <EditText
         android:id="@+id/editTextFirstname"
         android:layout_width="200dp"
-        android:layout_height="35dp"
+        android:layout_height="50dp"
         android:layout_gravity="center" />
 
     <TextView
@@ -47,7 +47,7 @@
     <EditText
         android:id="@+id/editTextSurname"
         android:layout_width="200dp"
-        android:layout_height="35dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"/>
 
     <Button

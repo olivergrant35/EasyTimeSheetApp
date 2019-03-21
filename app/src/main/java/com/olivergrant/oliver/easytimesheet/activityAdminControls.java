@@ -22,6 +22,7 @@ public class activityAdminControls extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO: Open page displaying all current employees
+                startActivity(new Intent(activityAdminControls.this, activity_EmployeeList.class));
             }
         });
 

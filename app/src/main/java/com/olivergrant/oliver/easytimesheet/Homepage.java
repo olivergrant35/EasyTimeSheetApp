@@ -29,7 +29,6 @@ public class Homepage extends AppCompatActivity {
     CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
     TextView textViewStatus;
-    DatabaseController dbController;
     String TAG = "HomepageTAG";
     Boolean activityOpen = false;
 
@@ -40,8 +39,8 @@ public class Homepage extends AppCompatActivity {
         //TODO: Camera get instance as i enabled it in phone permissions. Need to make it so it requests permission.
         surfaceView = findViewById(R.id.cameraPreview);
         textViewStatus = findViewById(R.id.textViewStatusUpdate);
+        DatabaseController.StartController();
 
-        dbController = new DatabaseController();
         //dbController.WriteNewEmployee(new Employee("Admin", "Admin"));
         //dbController.WriteNewEmployee(new Employee("Oliver", "Grant"));
         startScanning();
@@ -123,14 +122,15 @@ public class Homepage extends AppCompatActivity {
                     //TODO: Need to create a database of employees and check the code scan against it. SHOULD BE DONE. TEST.
                     //TODO: Check if they have had a clock in already, if so, clock out. Need to consider multiple clocking in a day. SHOULD BE DONE, TEST MULTIPLE SAME DAY.
                     String code = qrCodes.valueAt(0).displayValue;
-                    Employee emp = dbController.FindEmployeeByCode(code);
+                    Employee emp = DatabaseController.FindEmployeeByCode(code);
                     //Make sure employee was found, if so check their last clocktype and then add new one accordingly.
                     if(emp != null){
                         if(emp.getAdmin()){
                             //TODO: Need to make it so it will only open once, atm opens multiple times.
-                            if(!activityOpen)
+                            if(!activityOpen){
                                 activityOpen = true;
                                 startActivity(new Intent(Homepage.this, activityAdminControls.class));
+                            }
                             return;
                         }
                         if(emp.getCurrentClockType() == ClockType.ClockIn)

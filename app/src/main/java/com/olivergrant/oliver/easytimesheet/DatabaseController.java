@@ -13,29 +13,24 @@ import java.util.List;
 
 public class DatabaseController {
 
-    private FirebaseDatabase database;
-    private DatabaseReference employeesRef;
-    private String TAG = "DatabaseControllerError";
+    private static FirebaseDatabase database;
+    private static DatabaseReference employeesRef;
+    private static String TAG = "DatabaseControllerError";
 
-    private List<Employee> employeeList;
-    private Employee testEmp;
+    private static List<Employee> employeeList;
 
-    public DatabaseController() {
-        this.database = FirebaseDatabase.getInstance();
-        this.employeesRef = database.getReference("Employees");
+    //Want the controller to be static so cannot have constructor. Method gets called when Homepage loads.
+    public static void StartController() {
+        database = FirebaseDatabase.getInstance();
+        employeesRef = database.getReference("Employees");
         employeeList = new ArrayList<>();
-        PopulateEmployeeList();
-    }
-
-    private void PopulateEmployeeList(){
         employeesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 employeeList.clear();
-                testEmp = dataSnapshot.getValue(Employee.class);
                 for(DataSnapshot employeeSnapshot : dataSnapshot.getChildren()){
                     //TODO: employee returns as the object but all properties are null. Fix this.
-                        Employee employee = employeeSnapshot.getValue(Employee.class);
+                    Employee employee = employeeSnapshot.getValue(Employee.class);
                     employeeList.add(employee);
                 }
             }
@@ -47,7 +42,7 @@ public class DatabaseController {
         });
     }
 
-    public Employee FindEmployeeByCode(String code){
+    public static Employee FindEmployeeByCode(String code){
         for(int i=0; i < employeeList.size(); i++){
             if(employeeList.get(i).getEmployeeCode().equals(code)){
                 return employeeList.get(i);
@@ -56,12 +51,12 @@ public class DatabaseController {
         return null;
     }
 
-    public void WriteNewEmployee(Employee emp){
+    public static void WriteNewEmployee(Employee emp){
         String key = employeesRef.push().getKey();
         employeesRef.child(key).setValue(emp);
     }
 
-    public String NewEmployeeCode(){
+    public static String NewEmployeeCode(){
         //TODO: Need to check the last employee code, increment by 1 and return that.
         int c = 1000;
         for (Employee emp: employeeList) {
@@ -69,10 +64,10 @@ public class DatabaseController {
                 c = Integer.parseInt(emp.getEmployeeCode());
             }
         }
-        return Integer.toString(c);
+        return Integer.toString((c+1));
     }
 
-    public void SetEmployeeAdmin(Employee emp, boolean isAdmin){
+    public static void SetEmployeeAdmin(Employee emp, boolean isAdmin){
         emp.setAdmin(isAdmin);
     }
 }

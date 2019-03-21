@@ -6,20 +6,18 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class New_Employee extends AppCompatActivity {
 
     Button buttonCreateEmployee;
     EditText editTextFistname;
     EditText editTextSurname;
-    DatabaseController db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new__employee);
-
-        db = new DatabaseController();
 
         buttonCreateEmployee = findViewById(R.id.buttonCreateEmployee);
         editTextFistname = findViewById(R.id.editTextFirstname);
@@ -30,7 +28,9 @@ public class New_Employee extends AppCompatActivity {
             public void onClick(View v) {
                 //TODO: Need to check to make sure the names only contain letters.
                 if(!TextUtils.isEmpty(editTextFistname.getText()) && !TextUtils.isEmpty(editTextSurname.getText())){
-                    db.WriteNewEmployee(new Employee(editTextFistname.getText().toString(), editTextSurname.getText().toString()));
+                    DatabaseController.WriteNewEmployee(new Employee(editTextFistname.getText().toString(), editTextSurname.getText().toString()));
+                    Toast.makeText(New_Employee.this, "New employee created.", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
         });

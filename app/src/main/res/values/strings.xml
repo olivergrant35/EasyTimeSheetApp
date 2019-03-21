@@ -18,4 +18,5 @@
     <string name="adminControlsCreateEmployeeTitle">Please fill out the following details.</string>
     <string name="goButton">Go</string>
     <string name="TestText">TestText</string>
+    <string name="employeeListTitle">Current Employees</string>
 </resources>
