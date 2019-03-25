@@ -17,7 +17,7 @@ public class DatabaseController {
     private static DatabaseReference employeesRef;
     private static String TAG = "DatabaseControllerError";
 
-    private static List<Employee> employeeList;
+    private static ArrayList<Employee> employeeList;
 
     //Want the controller to be static so cannot have constructor. Method gets called when Homepage loads.
     public static void StartController() {
@@ -65,6 +65,10 @@ public class DatabaseController {
             }
         }
         return Integer.toString((c+1));
+    }
+
+    public static ArrayList<Employee> getEmployeeList() {
+        return employeeList;
     }
 
     public static void SetEmployeeAdmin(Employee emp, boolean isAdmin){

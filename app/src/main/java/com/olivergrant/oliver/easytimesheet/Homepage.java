@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ import java.io.IOException;
 
 public class Homepage extends AppCompatActivity {
 
+    static final int REQUEST_CAMERA = 1001;
+
     SurfaceView surfaceView;
     CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
@@ -41,9 +44,15 @@ public class Homepage extends AppCompatActivity {
         textViewStatus = findViewById(R.id.textViewStatusUpdate);
         DatabaseController.StartController();
 
-        //dbController.WriteNewEmployee(new Employee("Admin", "Admin"));
-        //dbController.WriteNewEmployee(new Employee("Oliver", "Grant"));
-        startScanning();
+        //Check to make sure the app has permission to use the camera. If false, request camera permission.
+        if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+            startScanning();
+        }else{
+            if(shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
+                Toast.makeText(this, "Camera permission is needed to scan QR codes and take photos of employees when needed.", Toast.LENGTH_LONG).show();
+            }
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+        }
 
         //Getting that buttons
         final Button buttonChangeSignInMethod = findViewById(R.id.buttonChangeSignInMethod);
@@ -56,6 +65,19 @@ public class Homepage extends AppCompatActivity {
                 startActivity(new Intent(Homepage.this, activity_codeScreen.class));
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == REQUEST_CAMERA) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startScanning();
+            } else {
+                Toast.makeText(this, "Camera permission needs to be granted for application to function.", Toast.LENGTH_LONG).show();
+            }
+        }else {
+            super.onRequestPermissionsResult(requestCode, permissions,grantResults);
+        }
     }
 
     //Method will start and display the camera and also scan for QR codes.

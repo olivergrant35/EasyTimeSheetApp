@@ -10,16 +10,35 @@
     <TextView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:textSize="50dp"
+        android:textSize="35dp"
         android:layout_gravity="center_horizontal"
         android:text="@string/employeeListTitle"
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"/>
 
-    <SearchView
-        android:layout_width="350dp"
-        android:layout_height="500dp"
+    <TextView
+        android:id="@+id/textViewNumOfEmployees"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/employeeListTitle"
+        android:layout_marginTop="5dp"
+        android:gravity="center_horizontal"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:id="@+id/editTextEmployeeSearchBar"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"/>
+
+    <ListView
+        android:id="@+id/listViewEmployees"
+        android:layout_width="300dp"
+        android:layout_height="450dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

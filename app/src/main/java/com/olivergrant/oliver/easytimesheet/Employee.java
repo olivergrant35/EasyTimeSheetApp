@@ -21,8 +21,8 @@ public class Employee {
     }
 
     public Employee(String firstName, String surname) {
-        FirstName = firstName;
-        Surname = surname;
+        FirstName = firstName.trim();
+        Surname = surname.trim();
         EmployeeCode = DatabaseController.NewEmployeeCode();
         Fullname = firstName + " " + surname + " ";
         IsAdmin = false;
