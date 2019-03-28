@@ -2,6 +2,7 @@ package com.olivergrant.oliver.easytimesheet;
 
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -14,6 +15,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.zxing.WriterException;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import androidmads.library.qrgenearator.QRGContents;
@@ -25,16 +27,19 @@ public class DatabaseController {
     private static FirebaseDatabase database;
     private static DatabaseReference employeesRef;
     private static StorageReference qrStorageRef;
-    private static String TempFolderPath = Environment.getDownloadCacheDirectory() + "/EasyTimesheetTemp";
+    private static File filesDir;
+    private static String folderPath;
     private static String TAG = "DatabaseControllerError";
 
     private static ArrayList<Employee> employeeList;
 
     //Want the controller to be static so cannot have constructor. Method gets called when Homepage loads.
-    public static void StartController() {
+    public static void StartController(File files) {
         database = FirebaseDatabase.getInstance();
         employeesRef = database.getReference("Employees");
         qrStorageRef = FirebaseStorage.getInstance().getReference("QRCodes");
+        filesDir = files;
+        folderPath = filesDir + "/EasyTimesheetImages";
         SetUpRequiredFolders();
         employeeList = new ArrayList<>();
         employeesRef.addValueEventListener(new ValueEventListener() {
@@ -81,7 +86,10 @@ public class DatabaseController {
 
     //TODO: Check if the temp folder exists, if false then create it.
     public static void SetUpRequiredFolders(){
-
+        File f = new File(folderPath);
+        if(!f.exists() || !f.isDirectory()){
+            f.mkdir();
+        }
     }
 
     //TODO: Save image to database.

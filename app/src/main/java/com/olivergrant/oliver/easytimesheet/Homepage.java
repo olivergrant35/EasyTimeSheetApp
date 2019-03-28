@@ -21,6 +21,7 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.firebase.FirebaseApp;
 
 import java.io.IOException;
 
@@ -42,7 +43,8 @@ public class Homepage extends AppCompatActivity {
         setContentView(R.layout.activity_homepage);
         surfaceView = findViewById(R.id.cameraPreview);
         textViewStatus = findViewById(R.id.textViewStatusUpdate);
-        DatabaseController.StartController();
+        FirebaseApp.initializeApp(this);
+        DatabaseController.StartController(getFilesDir());
 
         //Check to make sure the app has permission to use the camera. If false, request camera permission.
         if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
@@ -54,13 +56,13 @@ public class Homepage extends AppCompatActivity {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
         }
 
-        //Check to make sure app has permission to storage so QR codes can be generated and saved.
-        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                Toast.makeText(this, "Storage permission is needed to save created QR Codes.", Toast.LENGTH_LONG).show();
-            }
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
-        }
+        //Check to make sure app has permission to storage so QR codes can be generated and saved. Might not need external storage.
+//        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+//            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+//                Toast.makeText(this, "Storage permission is needed to save created QR Codes.", Toast.LENGTH_LONG).show();
+//            }
+//            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
+//        }
 
         //Getting that buttons
         final Button buttonChangeSignInMethod = findViewById(R.id.buttonChangeSignInMethod);
