@@ -25,6 +25,7 @@
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
         android:textSize="20dp"/>
+    
 
     <EditText
         android:id="@+id/editTextEmployeeSearchBar"

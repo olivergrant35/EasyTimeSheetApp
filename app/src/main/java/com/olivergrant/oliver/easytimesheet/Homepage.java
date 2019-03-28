@@ -27,6 +27,7 @@ import java.io.IOException;
 public class Homepage extends AppCompatActivity {
 
     static final int REQUEST_CAMERA = 1001;
+    static final int REQUEST_STORAGE = 1002;
 
     SurfaceView surfaceView;
     CameraSource cameraSource;
@@ -39,7 +40,6 @@ public class Homepage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
-        //TODO: Camera get instance as i enabled it in phone permissions. Need to make it so it requests permission.
         surfaceView = findViewById(R.id.cameraPreview);
         textViewStatus = findViewById(R.id.textViewStatusUpdate);
         DatabaseController.StartController();
@@ -52,6 +52,14 @@ public class Homepage extends AppCompatActivity {
                 Toast.makeText(this, "Camera permission is needed to scan QR codes and take photos of employees when needed.", Toast.LENGTH_LONG).show();
             }
             requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+        }
+
+        //Check to make sure app has permission to storage so QR codes can be generated and saved.
+        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                Toast.makeText(this, "Storage permission is needed to save created QR Codes.", Toast.LENGTH_LONG).show();
+            }
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
         }
 
         //Getting that buttons
@@ -69,11 +77,19 @@ public class Homepage extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == REQUEST_CAMERA) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startScanning();
-            } else {
-                Toast.makeText(this, "Camera permission needs to be granted for application to function.", Toast.LENGTH_LONG).show();
+        if(requestCode == REQUEST_CAMERA || requestCode == REQUEST_STORAGE) {
+            if(requestCode == REQUEST_CAMERA){
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startScanning();
+                } else {
+                    Toast.makeText(this, "Camera permission needs to be granted for application to function.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            if(requestCode == REQUEST_STORAGE){
+                if(grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    Toast.makeText(this, "Storage permission needs to be granted to create new QR Codes for employees.", Toast.LENGTH_LONG).show();
+                }
             }
         }else {
             super.onRequestPermissionsResult(requestCode, permissions,grantResults);
@@ -137,18 +153,16 @@ public class Homepage extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                //TODO: Make it display "Invalid login".
+                                Toast.makeText(Homepage.this, "Invalid Login", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
-                    //TODO: Need to create a database of employees and check the code scan against it. SHOULD BE DONE. TEST.
                     //TODO: Check if they have had a clock in already, if so, clock out. Need to consider multiple clocking in a day. SHOULD BE DONE, TEST MULTIPLE SAME DAY.
                     String code = qrCodes.valueAt(0).displayValue;
                     Employee emp = DatabaseController.FindEmployeeByCode(code);
                     //Make sure employee was found, if so check their last clocktype and then add new one accordingly.
                     if(emp != null){
                         if(emp.getAdmin()){
-                            //TODO: Need to make it so it will only open once, atm opens multiple times.
                             if(!activityOpen){
                                 activityOpen = true;
                                 startActivity(new Intent(Homepage.this, activityAdminControls.class));

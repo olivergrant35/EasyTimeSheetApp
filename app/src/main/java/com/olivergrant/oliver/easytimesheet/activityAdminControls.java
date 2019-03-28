@@ -21,7 +21,6 @@ public class activityAdminControls extends AppCompatActivity {
         buttonCurrentEmployees.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Open page displaying all current employees
                 startActivity(new Intent(activityAdminControls.this, activity_EmployeeList.class));
             }
         });
@@ -29,7 +28,6 @@ public class activityAdminControls extends AppCompatActivity {
         buttonNewEmployee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Open page where the admin can create a new employee account.
                 startActivity(new Intent(activityAdminControls.this, New_Employee.class));
             }
         });

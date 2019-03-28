@@ -25,13 +25,13 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="#505050"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="105dp"/>
 
     <EditText
         android:id="@+id/editTextFirstname"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_gravity="center" />
 
     <TextView
@@ -47,14 +47,14 @@
     <EditText
         android:id="@+id/editTextSurname"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"/>
 
     <Button
         android:id="@+id/buttonCreateEmployee"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:text="@string/adminControlCreateEmployee"/>
 </LinearLayout>

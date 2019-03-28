@@ -20,4 +20,5 @@
     <string name="TestText">TestText</string>
     <string name="employeeListTitle">Current Employees</string>
     <string name="employeeListTotal">Total Employees:</string>
+    <string name="employeeListSearch">Search:</string>
 </resources>

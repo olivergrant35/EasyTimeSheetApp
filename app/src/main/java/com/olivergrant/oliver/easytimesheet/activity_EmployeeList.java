@@ -23,7 +23,7 @@ public class activity_EmployeeList extends AppCompatActivity {
         textViewNumofEmployees = (TextView)findViewById(R.id.textViewNumOfEmployees);
         searchBar = (EditText)findViewById(R.id.editTextEmployeeSearchBar);
 
-        //TODO: Need to make searching the employee list working. 
+        //TODO: Need to make searching the employee list working.
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

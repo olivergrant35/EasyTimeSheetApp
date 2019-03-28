@@ -1,10 +1,19 @@
 package com.olivergrant.oliver.easytimesheet;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
+import com.google.zxing.WriterException;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
+import androidmads.library.qrgenearator.QRGSaver;
 
 public class Employee {
 
@@ -28,7 +37,6 @@ public class Employee {
         IsAdmin = false;
     }
 
-    //TODO: Employee code needs to be uniquely generated with a QR code.
     public String getEmployeeCode() {
         return EmployeeCode;
     }
