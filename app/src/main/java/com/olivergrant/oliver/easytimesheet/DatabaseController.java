@@ -1,11 +1,13 @@
 package com.olivergrant.oliver.easytimesheet;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -13,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.zxing.WriterException;
 
 import java.io.File;
@@ -88,13 +91,22 @@ public class DatabaseController {
     public static void SetUpRequiredFolders(){
         File f = new File(folderPath);
         if(!f.exists() || !f.isDirectory()){
-            f.mkdir();
+            f.mkdirs();
         }
     }
 
     //TODO: Save image to database.
-    public static void SaveImageToDatabase(){
+    public static void SaveImageToDatabase(String imgName, Employee emp){
+        Uri image = Uri.fromFile(new File(folderPath + "/" + imgName));
+        StorageReference imgRef = qrStorageRef.child(emp.getEmployeeCode() + "/" + imgName);
 
+        imgRef.putFile(image)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    }
+                })
     }
 
     public void GenerateQRCode(String code){
