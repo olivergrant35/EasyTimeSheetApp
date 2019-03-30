@@ -1,80 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity_codeScreen">
-
-    <EditText
-        android:id="@+id/editTextCodeField"
-        android:layout_width="100dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="121dp"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="11dp"
-        android:background="@drawable/layout_border"
-        android:ems="10"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        android:numeric="integer"
-        android:text="@string/codeTyped"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toStartOf="@+id/buttonGo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".activity_codeScreen"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="177dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="177dp"
         android:text="@string/textViewInstructionQR"
         android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"/>
+
+    <EditText
+        android:id="@+id/editTextCodeField"
+        android:layout_width="100dp"
+        android:layout_height="44dp"
+        android:padding="3dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/layout_border"
+        android:ems="10"
+        android:textSize="30sp"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:text="@string/codeTyped"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/buttonGo"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/goButton"/>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="190dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="190dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
         android:text="@string/textViewInstructionOr"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextCodeField" />
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/buttonScanQRCode"
         android:layout_width="270dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="71dp"
-        android:text="@string/signInButtonQR"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/signInButtonQR"/>
 
-    <Button
-        android:id="@+id/buttonGo"
-        android:layout_width="62dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="113dp"
-        android:layout_marginBottom="66dp"
-        android:text="@string/goButton"
-        app:layout_constraintBottom_toTopOf="@+id/buttonScanQRCode"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editTextCodeField"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.0" />
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
