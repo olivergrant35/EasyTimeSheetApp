@@ -1,11 +1,15 @@
 package com.olivergrant.oliver.easytimesheet;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -13,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.zxing.WriterException;
 
 import java.io.File;
@@ -88,12 +93,32 @@ public class DatabaseController {
     public static void SetUpRequiredFolders(){
         File f = new File(folderPath);
         if(!f.exists() || !f.isDirectory()){
-            f.mkdir();
+            f.mkdirs();
         }
     }
 
     //TODO: Save image to database.
-    public static void SaveImageToDatabase(){
+    public static void SaveImageToDatabase(String imageName, Employee emp){
+        Uri file = Uri.fromFile(new File(folderPath + "/" + imageName));
+        StorageReference codeRef = qrStorageRef.child(emp.getEmployeeCode());
+
+        codeRef.putFile(file)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //TODO: Decide how to handle a failed upload.
+                        Log.d("UploadError", e.getMessage());
+                    }
+                });
+    }
+
+    public static void GetImagesFromDatabase(Employee emp){
 
     }
 

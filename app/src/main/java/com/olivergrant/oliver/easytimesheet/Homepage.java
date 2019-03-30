@@ -43,7 +43,6 @@ public class Homepage extends AppCompatActivity {
         setContentView(R.layout.activity_homepage);
         surfaceView = findViewById(R.id.cameraPreview);
         textViewStatus = findViewById(R.id.textViewStatusUpdate);
-        FirebaseApp.initializeApp(this);
         DatabaseController.StartController(getFilesDir());
 
         //Check to make sure the app has permission to use the camera. If false, request camera permission.
