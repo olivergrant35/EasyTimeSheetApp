@@ -1,7 +1,6 @@
 package com.olivergrant.oliver.easytimesheet;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
@@ -15,7 +14,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
@@ -69,7 +67,7 @@ public class Homepage extends AppCompatActivity {
         }
 
         //After permissions have been checked, start controller
-        DatabaseController.StartController(Environment.getExternalStorageDirectory());
+        DataController.StartController(Environment.getExternalStorageDirectory());
 
         //Getting that buttons
         final Button buttonChangeSignInMethod = findViewById(R.id.buttonChangeSignInMethod);
@@ -176,7 +174,7 @@ public class Homepage extends AppCompatActivity {
                     }
                     //TODO: Check if they have had a clock in already, if so, clock out. Need to consider multiple clocking in a day. SHOULD BE DONE, TEST MULTIPLE SAME DAY.
                     String code = qrCodes.valueAt(0).displayValue;
-                    Employee emp = DatabaseController.FindEmployeeByCode(code);
+                    Employee emp = DataController.FindEmployeeByCode(code);
                     //Make sure employee was found, if so check their last clocktype and then add new one accordingly.
                     if(emp != null){
                         if(emp.getAdmin()){

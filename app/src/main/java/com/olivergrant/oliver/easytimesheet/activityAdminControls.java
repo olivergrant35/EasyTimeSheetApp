@@ -8,15 +8,20 @@ import android.widget.Button;
 
 public class activityAdminControls extends AppCompatActivity {
 
+    Button buttonCurrentEmployees;
+    Button buttonNewEmployee;
+    Button buttonEndOfMonthHours;
+    Button buttonOptions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_controls);
 
-        //Get buttons
-        final Button buttonCurrentEmployees = findViewById(R.id.buttonCurrentEmployees);
-        final Button buttonNewEmployee = findViewById(R.id.buttonNewEmployee);
-        final Button buttonEndOfMonthHours = findViewById(R.id.buttonEndOfMonthHours);
+        buttonCurrentEmployees = findViewById(R.id.buttonCurrentEmployees);
+        buttonNewEmployee = findViewById(R.id.buttonNewEmployee);
+        buttonEndOfMonthHours = findViewById(R.id.buttonEndOfMonthHours);
+        buttonOptions = findViewById(R.id.buttonOptions);
 
         buttonCurrentEmployees.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +47,13 @@ public class activityAdminControls extends AppCompatActivity {
                 the month to the current date then display the hours next to the employees name. The admin will
                 be able to click on the employee to see a breakdown of their hours.
                  */
+            }
+        });
+
+        buttonOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(activityAdminControls.this, activity_AdminOptions.class));
             }
         });
     }

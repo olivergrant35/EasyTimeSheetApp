@@ -49,10 +49,10 @@ public class EmployeeAdapter  extends ArrayAdapter implements Filterable {
                 ArrayList<Employee> FilteredEmployees = new ArrayList<>();
 
                 constraint = constraint.toString().toLowerCase();
-                for (int i=0; i < DatabaseController.getEmployeeList().size(); i++){
-                    String empName = DatabaseController.getEmployeeList().get(i).getFullname();
+                for (int i = 0; i < DataController.getEmployeeList().size(); i++){
+                    String empName = DataController.getEmployeeList().get(i).getFullname();
                     if(empName.toLowerCase().startsWith(constraint.toString())){
-                        FilteredEmployees.add(DatabaseController.getEmployeeList().get(i));
+                        FilteredEmployees.add(DataController.getEmployeeList().get(i));
                     }
                 }
                 results.count = FilteredEmployees.size();

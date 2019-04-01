@@ -41,9 +41,9 @@ public class activity_EmployeeList extends AppCompatActivity {
         });
 
         String message = getString(R.string.employeeListTotal);
-        textViewNumofEmployees.setText(message + " " + DatabaseController.getEmployeeList().size());
+        textViewNumofEmployees.setText(message + " " + DataController.getEmployeeList().size());
 
-        adapter = new EmployeeAdapter(this, DatabaseController.getEmployeeList());
+        adapter = new EmployeeAdapter(this, DataController.getEmployeeList());
 
         ListView listView = (ListView)findViewById(R.id.listViewEmployees);
         listView.setAdapter(adapter);

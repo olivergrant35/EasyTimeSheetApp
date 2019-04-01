@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class activity_codeScreen extends AppCompatActivity {
 
@@ -36,7 +35,7 @@ public class activity_codeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String code = codeField.getText().toString();
-                Employee emp = DatabaseController.FindEmployeeByCode(code);
+                Employee emp = DataController.FindEmployeeByCode(code);
                 //Make sure employee was found, if so check their last clocktype and then add new one accordingly.
                 if(emp != null){
                     if(emp.getAdmin()){

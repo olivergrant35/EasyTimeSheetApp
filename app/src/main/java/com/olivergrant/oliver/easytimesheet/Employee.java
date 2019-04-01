@@ -1,19 +1,10 @@
 package com.olivergrant.oliver.easytimesheet;
 
-import android.graphics.Bitmap;
-import android.util.Log;
-
-import com.google.zxing.WriterException;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
-import androidmads.library.qrgenearator.QRGSaver;
 
 public class Employee {
 
@@ -21,6 +12,7 @@ public class Employee {
     private String Surname;
     private String EmployeeCode;
     private String Fullname;
+    private String Email;
     private Boolean IsAdmin;
     private ClockType currentClockType;
     private Map<String, ClockType> ClockTimes = new HashMap<>();
@@ -29,10 +21,11 @@ public class Employee {
 
     }
 
-    public Employee(String firstName, String surname) {
+    public Employee(String firstName, String surname, String email) {
         FirstName = firstName.trim();
         Surname = surname.trim();
-        EmployeeCode = DatabaseController.NewEmployeeCode();
+        Email = email.trim();
+        EmployeeCode = DataController.NewEmployeeCode();
         Fullname = firstName + " " + surname + " ";
         IsAdmin = false;
     }
@@ -93,6 +86,14 @@ public class Employee {
 
     public void setClockTimes(Map<String, ClockType> clockTimes) {
         ClockTimes = clockTimes;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
     }
 
     public void setAdmin(Boolean admin) {

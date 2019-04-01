@@ -1,5 +1,6 @@
 package com.olivergrant.oliver.easytimesheet;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -24,7 +25,7 @@ import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import androidmads.library.qrgenearator.QRGSaver;
 
-public class DatabaseController {
+public class DataController {
 
     private static FirebaseDatabase database;
     private static DatabaseReference employeesRef;
@@ -32,6 +33,7 @@ public class DatabaseController {
     private static File filesDir;
     private static String folderPath;
     private static String TAG = "DatabaseControllerError";
+    private static Boolean takePhotos = false;
 
     private static ArrayList<Employee> employeeList;
 
@@ -75,7 +77,6 @@ public class DatabaseController {
         employeesRef.child(key).setValue(emp);
     }
 
-    //TODO: Need to generate a QR code aswell.
     public static String NewEmployeeCode(){
         int c = 1000;
         for (Employee emp: employeeList) {
@@ -88,7 +89,7 @@ public class DatabaseController {
         return newCode;
     }
 
-    //TODO: Check if the temp folder exists, if false then create it.
+    //Check if required files exist. If not, create them.
     public static void SetUpRequiredFolders(){
         File f = new File(folderPath);
         if(!f.exists()){
@@ -97,7 +98,7 @@ public class DatabaseController {
         }
     }
 
-    //TODO: Save image to database.
+    //Save the image to database with the name being the employee code.
     public static void SaveImageToDatabase(String imageName, String code){
         final Uri file = Uri.fromFile(new File(folderPath + "/" + imageName + ".jpg"));
         final File f = new File(folderPath + "/" + imageName + ".jpg");
