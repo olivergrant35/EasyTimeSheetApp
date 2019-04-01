@@ -2,11 +2,8 @@ package com.olivergrant.oliver.easytimesheet;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -86,27 +83,33 @@ public class DatabaseController {
                 c = Integer.parseInt(emp.getEmployeeCode());
             }
         }
-        return Integer.toString((c+1));
+        String newCode = Integer.toString(c+1);
+        GenerateQRCode(newCode);
+        return newCode;
     }
 
     //TODO: Check if the temp folder exists, if false then create it.
     public static void SetUpRequiredFolders(){
         File f = new File(folderPath);
-        if(!f.exists() || !f.isDirectory()){
-            f.mkdirs();
+        if(!f.exists()){
+            if(!f.mkdirs())
+                Log.d(TAG, "Failed to create directories");
         }
     }
 
     //TODO: Save image to database.
-    public static void SaveImageToDatabase(String imageName, Employee emp){
-        Uri file = Uri.fromFile(new File(folderPath + "/" + imageName));
-        StorageReference codeRef = qrStorageRef.child(emp.getEmployeeCode());
+    public static void SaveImageToDatabase(String imageName, String code){
+        final Uri file = Uri.fromFile(new File(folderPath + "/" + imageName + ".jpg"));
+        final File f = new File(folderPath + "/" + imageName + ".jpg");
+        StorageReference codeRef = qrStorageRef.child(code);
 
+        //TODO: Add authentication to access the database.
         codeRef.putFile(file)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        
+                        f.delete();
+                        Log.d("UploadError", "Uploaded");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -122,11 +125,14 @@ public class DatabaseController {
 
     }
 
-    public void GenerateQRCode(String code){
+    public static void GenerateQRCode(String code){
         QRGEncoder qrencoder = new QRGEncoder(code, null, QRGContents.Type.TEXT, 150);
+        String imageName = "QRCode" + code;
         try {
             Bitmap b = qrencoder.encodeAsBitmap();
-            //QRGSaver.save()
+            boolean save;
+            save = QRGSaver.save(folderPath + "/", imageName, b, QRGContents.ImageType.IMAGE_JPEG);
+            SaveImageToDatabase(imageName, code);
         }catch (WriterException e){
             Log.v("EMPLOYEE ERROR", e.toString());
         }

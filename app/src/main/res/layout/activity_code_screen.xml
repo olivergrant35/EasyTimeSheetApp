@@ -32,15 +32,18 @@
         android:inputType="number"
         android:text="@string/codeTyped"
         android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:maxLength="4">
+        <requestFocus/>
+    </EditText>
 
     <Button
         android:id="@+id/buttonGo"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/goButton"/>
+        android:text="@string/goButton" />
 
     <TextView
         android:id="@+id/textView2"
@@ -53,8 +56,8 @@
 
     <Button
         android:id="@+id/buttonScanQRCode"
-        android:layout_width="270dp"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
         android:text="@string/signInButtonQR"/>

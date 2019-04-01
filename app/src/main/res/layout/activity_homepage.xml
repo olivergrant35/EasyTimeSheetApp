@@ -12,7 +12,7 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="75dp">
+        android:layout_marginTop="50dp">
 
         <SurfaceView
             android:layout_width="match_parent"
@@ -28,7 +28,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:text="@string/textViewInstruction"
-        android:textSize="24sp"/>
+        android:textSize="24sp"
+        android:textColor="#505050"/>
 
     <TextView
         android:id="@+id/textViewInstructionOr"
@@ -37,23 +38,15 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:text="@string/textViewInstructionOr"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textColor="#505050"/>
 
     <Button
         android:id="@+id/buttonChangeSignInMethod"
-        android:layout_width="270dp"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:text="@string/signInButtonCode"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"/>
-
-    <TextView
-        android:id="@+id/textViewStatusUpdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:text="@string/TestText"
-        android:textSize="30sp"/>
 
 </LinearLayout>

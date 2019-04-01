@@ -1,8 +1,10 @@
 package com.olivergrant.oliver.easytimesheet;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -26,12 +28,12 @@ import java.io.IOException;
 public class Homepage extends AppCompatActivity {
 
     static final int REQUEST_CAMERA = 1001;
-    static final int REQUEST_STORAGE = 1002;
+    static final int REQUEST_WRITE_STORAGE = 1002;
+    static final int REQUEST_READ_STORAGE = 1003;
 
     SurfaceView surfaceView;
     CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
-    TextView textViewStatus;
     String TAG = "HomepageTAG";
     Boolean activityOpen = false;
 
@@ -40,8 +42,6 @@ public class Homepage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         surfaceView = findViewById(R.id.cameraPreview);
-        textViewStatus = findViewById(R.id.textViewStatusUpdate);
-        DatabaseController.StartController(getFilesDir());
 
         //Check to make sure the app has permission to use the camera. If false, request camera permission.
         if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
@@ -54,12 +54,22 @@ public class Homepage extends AppCompatActivity {
         }
 
         //Check to make sure app has permission to storage so QR codes can be generated and saved. Might not need external storage.
-//        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-//            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-//                Toast.makeText(this, "Storage permission is needed to save created QR Codes.", Toast.LENGTH_LONG).show();
-//            }
-//            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
-//        }
+        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                Toast.makeText(this, "Storage permission is needed to save created QR Codes.", Toast.LENGTH_LONG).show();
+            }
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_STORAGE);
+        }
+
+        if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            if(shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)){
+                Toast.makeText(this, "Storage permission is needed to save created QR Codes.", Toast.LENGTH_LONG).show();
+            }
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_STORAGE);
+        }
+
+        //After permissions have been checked, start controller
+        DatabaseController.StartController(Environment.getExternalStorageDirectory());
 
         //Getting that buttons
         final Button buttonChangeSignInMethod = findViewById(R.id.buttonChangeSignInMethod);
@@ -76,17 +86,23 @@ public class Homepage extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == REQUEST_CAMERA || requestCode == REQUEST_STORAGE) {
+        if(requestCode == REQUEST_CAMERA || requestCode == REQUEST_WRITE_STORAGE || requestCode == REQUEST_READ_STORAGE) {
             if(requestCode == REQUEST_CAMERA){
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startScanning();
                 } else {
                     Toast.makeText(this, "Camera permission needs to be granted for application to function.", Toast.LENGTH_LONG).show();
                 }
             }
 
-            if(requestCode == REQUEST_STORAGE){
-                if(grantResults[0] == PackageManager.PERMISSION_DENIED) {
+            if(requestCode == REQUEST_WRITE_STORAGE){
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    Toast.makeText(this, "Storage permission needs to be granted to create new QR Codes for employees.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            if(requestCode == REQUEST_READ_STORAGE){
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED){
                     Toast.makeText(this, "Storage permission needs to be granted to create new QR Codes for employees.", Toast.LENGTH_LONG).show();
                 }
             }
@@ -142,12 +158,14 @@ public class Homepage extends AppCompatActivity {
 
                 if(qrCodes.size() !=0){
                     if(qrCodes.valueAt(0).displayValue.length() == 4){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                textViewStatus.setText(qrCodes.valueAt(0).displayValue);
-                            }
-                        });
+                        if (!activityOpen) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(Homepage.this, "Code: " + qrCodes.valueAt(0).displayValue, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
                     }else{
                         runOnUiThread(new Runnable() {
                             @Override
