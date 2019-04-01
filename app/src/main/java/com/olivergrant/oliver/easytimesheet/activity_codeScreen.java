@@ -22,8 +22,6 @@ public class activity_codeScreen extends AppCompatActivity {
         final Button buttonChangeSignInMethod = findViewById(R.id.buttonScanQRCode);
         final Button buttonGo = findViewById(R.id.buttonGo);
 
-        //codeField.requestFocus();
-
         buttonChangeSignInMethod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,28 +29,35 @@ public class activity_codeScreen extends AppCompatActivity {
             }
         });
 
+        //Check code entered and create clocking for that employee.
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String code = codeField.getText().toString();
-                Employee emp = DataController.FindEmployeeByCode(code);
-                //Make sure employee was found, if so check their last clocktype and then add new one accordingly.
-                if(emp != null){
-                    if(emp.getAdmin()){
-                        if(!activityOpen){
-                            activityOpen = true;
-                            startActivity(new Intent(activity_codeScreen.this, activityAdminControls.class));
-                            finish();
+                if (codeField.getText().length() == 4) {
+                    String code = codeField.getText().toString();
+                    Employee emp = DataController.FindEmployeeByCode(code);
+                    //Make sure employee was found, if so check their last clocktype and then add new one accordingly.
+                    if(emp != null){
+                        if(emp.getAdmin()){
+                            if(!activityOpen){
+                                activityOpen = true;
+                                startActivity(new Intent(activity_codeScreen.this, activityAdminControls.class));
+                                finish();
+                            }
+                            return;
                         }
-                        return;
+                        if(emp.getCurrentClockType() == ClockType.ClockIn){
+                            emp.addClockTime(ClockType.ClockOut);
+                            DataController.UpdateEmployeeClockTimes(emp);
+                        }
+                        else{
+                            emp.addClockTime(ClockType.ClockIn);
+                            DataController.UpdateEmployeeClockTimes(emp);
+                        }
+                        Log.d(TAG, "Employee has been found");
+                    }else{
+                        Log.d(TAG, "Employee not found");
                     }
-                    if(emp.getCurrentClockType() == ClockType.ClockIn)
-                        emp.addClockTime(ClockType.ClockOut);
-                    else
-                        emp.addClockTime(ClockType.ClockIn);
-                    Log.d(TAG, "Employee has been found");
-                }else{
-                    Log.d(TAG, "Employee not found");
                 }
             }
         });

@@ -8,14 +8,29 @@ public class Clocking {
     private String Date;
     private ClockType ClockingType;
 
-    public Clocking(Date date, ClockType clockType){
-        this.Date = ConvertDateToString(date);
+    //Default constructor for database.
+    public Clocking(){
+
+    }
+
+    public Clocking(String date, ClockType clockType){
+        this.Date = date;
         this.ClockingType = clockType;
     }
 
-    private String ConvertDateToString(Date date){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        String d = sdf.format(date);
-        return d;
+    public String getDate() {
+        return Date;
+    }
+
+    public void setDate(String date) {
+        Date = date;
+    }
+
+    public ClockType getClockingType() {
+        return ClockingType;
+    }
+
+    public void setClockingType(ClockType clockingType) {
+        ClockingType = clockingType;
     }
 }

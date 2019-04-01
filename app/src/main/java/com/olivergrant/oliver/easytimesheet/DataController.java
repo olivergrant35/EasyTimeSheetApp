@@ -1,6 +1,5 @@
 package com.olivergrant.oliver.easytimesheet;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -63,6 +62,7 @@ public class DataController {
         });
     }
 
+    //Returns the Employee object that has the passed EmployeeCode.
     public static Employee FindEmployeeByCode(String code){
         for(int i=0; i < employeeList.size(); i++){
             if(employeeList.get(i).getEmployeeCode().equals(code)){
@@ -72,11 +72,24 @@ public class DataController {
         return null;
     }
 
+    //Writes a new employee to the database.
     public static void WriteNewEmployee(Employee emp){
         String key = employeesRef.push().getKey();
+        emp.setDBKey(key);
         employeesRef.child(key).setValue(emp);
     }
 
+    //Updates an employee when they add a new clock time.
+    public static void UpdateEmployeeClockTimes(Employee emp){
+        try {
+            employeesRef.child(emp.getDBKey()).child("clockTimes").setValue(emp.getClockTimes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //TODO: Change it to be 4 random and unique numbers.
+    //Generates a new and unique employee code.
     public static String NewEmployeeCode(){
         int c = 1000;
         for (Employee emp: employeeList) {
@@ -122,10 +135,12 @@ public class DataController {
                 });
     }
 
+    //Get image from database for passed Employee
     public static void GetImagesFromDatabase(Employee emp){
 
     }
 
+    //Generates a new QR code for an employee then calls method to save it to database.
     public static void GenerateQRCode(String code){
         QRGEncoder qrencoder = new QRGEncoder(code, null, QRGContents.Type.TEXT, 150);
         String imageName = "QRCode" + code;

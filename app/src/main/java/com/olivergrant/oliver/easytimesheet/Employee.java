@@ -12,11 +12,13 @@ public class Employee {
     private String Surname;
     private String EmployeeCode;
     private String Fullname;
+    private String DBKey;
     private String Email;
     private Boolean IsAdmin;
     private ClockType currentClockType;
-    private Map<String, ClockType> ClockTimes = new HashMap<>();
+    private Map<String, Clocking> ClockTimes = new HashMap<>();
 
+    //Default constructor for firebase database.
     public Employee(){
 
     }
@@ -38,14 +40,14 @@ public class Employee {
         return Fullname;
     }
 
-    public Map<String, ClockType> getClockTimes() {
+    public Map<String, Clocking> getClockTimes() {
         return ClockTimes;
     }
 
     public void addClockTime(ClockType clockType) {
         Date date = Calendar.getInstance().getTime();
         String d = ConvertDateToString(date);
-        ClockTimes.put(d, clockType);
+        ClockTimes.put(d, new Clocking(d, clockType));
     }
 
     public String getFirstName() {
@@ -84,7 +86,7 @@ public class Employee {
         this.currentClockType = currentClockType;
     }
 
-    public void setClockTimes(Map<String, ClockType> clockTimes) {
+    public void setClockTimes(Map<String, Clocking> clockTimes) {
         ClockTimes = clockTimes;
     }
 
@@ -96,12 +98,20 @@ public class Employee {
         Email = email;
     }
 
+    public String getDBKey() {
+        return DBKey;
+    }
+
+    public void setDBKey(String DBKey) {
+        this.DBKey = DBKey;
+    }
+
     public void setAdmin(Boolean admin) {
         IsAdmin = admin;
     }
 
     private String ConvertDateToString(Date date){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy HH:mm:ss");
         String d = sdf.format(date);
         return d;
     }

@@ -184,10 +184,14 @@ public class Homepage extends AppCompatActivity {
                             }
                             return;
                         }
-                        if(emp.getCurrentClockType() == ClockType.ClockIn)
+                        if(emp.getCurrentClockType() == ClockType.ClockIn){
                             emp.addClockTime(ClockType.ClockOut);
-                        else
+                            DataController.UpdateEmployeeClockTimes(emp);
+                        }
+                        else{
                             emp.addClockTime(ClockType.ClockIn);
+                            DataController.UpdateEmployeeClockTimes(emp);
+                        }
                         Log.d(TAG, "Employee has been found");
                     }else{
                         Log.d(TAG, "Employee not found");
