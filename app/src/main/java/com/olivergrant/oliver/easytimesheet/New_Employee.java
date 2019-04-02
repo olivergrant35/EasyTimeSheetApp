@@ -32,12 +32,18 @@ public class New_Employee extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO: Need to check to make sure the names only contain letters.
-                if(!TextUtils.isEmpty(editTextFistname.getText()) && !TextUtils.isEmpty(editTextSurname.getText())){
-                    Employee emp = new Employee(editTextFistname.getText().toString(), editTextSurname.getText().toString(), editTextEmail.getText().toString());
-                    DataController.WriteNewEmployee(emp);
-                    Toast.makeText(New_Employee.this, "New employee created.", Toast.LENGTH_SHORT).show();
-                    //SendCodeEmail(emp);
-                    finish();
+                if(!TextUtils.isEmpty(editTextFistname.getText()) && !TextUtils.isEmpty(editTextSurname.getText()) && !TextUtils.isEmpty(editTextEmail.getText())){
+                    if (editTextFistname.getText().toString().matches("[a-zA-Z]+") && editTextSurname.getText().toString().matches("[a-zA-Z]+")) {
+                        Employee emp = new Employee(editTextFistname.getText().toString(), editTextSurname.getText().toString(), editTextEmail.getText().toString());
+                        DataController.WriteNewEmployee(emp);
+                        Toast.makeText(New_Employee.this, "New employee created.", Toast.LENGTH_SHORT).show();
+                        //SendCodeEmail(emp);
+                        finish();
+                    }else {
+                        Toast.makeText(New_Employee.this, "Fistname and Surname can only contain letters. (a-z)", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(New_Employee.this, "All fields must be complete.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

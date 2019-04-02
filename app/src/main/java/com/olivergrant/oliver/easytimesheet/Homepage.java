@@ -172,7 +172,7 @@ public class Homepage extends AppCompatActivity {
                             }
                         });
                     }
-                    //TODO: Check if they have had a clock in already, if so, clock out. Need to consider multiple clocking in a day. SHOULD BE DONE, TEST MULTIPLE SAME DAY.
+                    //TODO: Check if they have had a clock in already, if so, clock out. Need to consider multiple clocking in a day.
                     String code = qrCodes.valueAt(0).displayValue;
                     Employee emp = DataController.FindEmployeeByCode(code);
                     //Make sure employee was found, if so check their last clocktype and then add new one accordingly.

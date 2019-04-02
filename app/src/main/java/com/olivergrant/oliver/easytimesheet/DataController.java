@@ -2,6 +2,7 @@ package com.olivergrant.oliver.easytimesheet;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -19,6 +20,8 @@ import com.google.zxing.WriterException;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -28,6 +31,7 @@ public class DataController {
 
     private static FirebaseDatabase database;
     private static DatabaseReference employeesRef;
+    private static DatabaseReference optionsRef;
     private static StorageReference qrStorageRef;
     private static File filesDir;
     private static String folderPath;
@@ -40,6 +44,7 @@ public class DataController {
     public static void StartController(File files) {
         database = FirebaseDatabase.getInstance();
         employeesRef = database.getReference("Employees");
+        optionsRef = database.getReference("Options");
         qrStorageRef = FirebaseStorage.getInstance().getReference("QRCodes");
         filesDir = files;
         folderPath = filesDir + "/EasyTimesheetImages";
@@ -52,6 +57,22 @@ public class DataController {
                 for(DataSnapshot employeeSnapshot : dataSnapshot.getChildren()){
                     Employee employee = employeeSnapshot.getValue(Employee.class);
                     employeeList.add(employee);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        optionsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot optionSnapshot : dataSnapshot.getChildren()){
+                    switch (optionSnapshot.getKey()){
+                        case "takePhotos":
+                            takePhotos = (boolean)optionSnapshot.getValue();
+                    }
                 }
             }
 
@@ -88,18 +109,26 @@ public class DataController {
         }
     }
 
-    //TODO: Change it to be 4 random and unique numbers.
     //Generates a new and unique employee code.
     public static String NewEmployeeCode(){
-        int c = 1000;
-        for (Employee emp: employeeList) {
-            if(Integer.parseInt(emp.getEmployeeCode()) >= c){
-                c = Integer.parseInt(emp.getEmployeeCode());
+        Random rand = new Random();
+        int num = rand.nextInt(9999);
+        num += 1000;
+        while (CheckIfCodeExists(Integer.toString(num))){
+            num += 1;
+        }
+        GenerateQRCode(Integer.toString(num));
+        return Integer.toString(num);
+    }
+
+    private static boolean CheckIfCodeExists(String code){
+        boolean result = false;
+        for(Employee emp : employeeList){
+            if(emp.getEmployeeCode().equals(code)){
+                result = true;
             }
         }
-        String newCode = Integer.toString(c+1);
-        GenerateQRCode(newCode);
-        return newCode;
+        return result;
     }
 
     //Check if required files exist. If not, create them.
@@ -154,11 +183,21 @@ public class DataController {
         }
     }
 
+    public static void SaveOptions(Map<String, Boolean> options){
+        for(Map.Entry<String, Boolean> option : options.entrySet()){
+            optionsRef.child(option.getKey()).setValue(option.getValue());
+        }
+    }
+
     public static ArrayList<Employee> getEmployeeList() {
         return employeeList;
     }
 
     public static void SetEmployeeAdmin(Employee emp, boolean isAdmin){
         emp.setAdmin(isAdmin);
+    }
+
+    public static Boolean getTakePhotos() {
+        return takePhotos;
     }
 }

@@ -19,6 +19,7 @@
     <string name="adminControlsCreateEmployeeTitle">Please fill out the following details.</string>
     <string name="adminOptionsTitle">Options</string>
     <string name="adminOptionsTakePhotos">Take photo when signing in? </string>
+    <string name="adminOptionsSave">Save Optiions</string>
     <string name="goButton">Go</string>
     <string name="TestText">TestText</string>
     <string name="employeeListTitle">Current Employees</string>

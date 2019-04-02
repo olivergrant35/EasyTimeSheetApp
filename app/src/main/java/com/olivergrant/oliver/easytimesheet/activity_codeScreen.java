@@ -49,10 +49,12 @@ public class activity_codeScreen extends AppCompatActivity {
                         if(emp.getCurrentClockType() == ClockType.ClockIn){
                             emp.addClockTime(ClockType.ClockOut);
                             DataController.UpdateEmployeeClockTimes(emp);
+                            finish();
                         }
                         else{
                             emp.addClockTime(ClockType.ClockIn);
                             DataController.UpdateEmployeeClockTimes(emp);
+                            finish();
                         }
                         Log.d(TAG, "Employee has been found");
                     }else{

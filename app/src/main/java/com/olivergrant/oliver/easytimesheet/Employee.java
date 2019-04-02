@@ -15,6 +15,7 @@ public class Employee {
     private String DBKey;
     private String Email;
     private Boolean IsAdmin;
+    //TODO: Need to store currentClockType in database. Might have to convert to string in getMethod. 
     private ClockType currentClockType;
     private Map<String, Clocking> ClockTimes = new HashMap<>();
 
@@ -111,7 +112,7 @@ public class Employee {
     }
 
     private String ConvertDateToString(Date date){
-        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String d = sdf.format(date);
         return d;
     }
