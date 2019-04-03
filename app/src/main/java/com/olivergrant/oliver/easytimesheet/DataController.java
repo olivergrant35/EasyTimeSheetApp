@@ -22,6 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -37,6 +38,7 @@ public class DataController {
     private static String folderPath;
     private static String TAG = "DatabaseControllerError";
     private static Boolean takePhotos = false;
+    private static Integer startOfMonthDay = 1;
 
     private static ArrayList<Employee> employeeList;
 
@@ -69,10 +71,10 @@ public class DataController {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot optionSnapshot : dataSnapshot.getChildren()){
-                    switch (optionSnapshot.getKey()){
-                        case "takePhotos":
-                            takePhotos = (boolean)optionSnapshot.getValue();
-                    }
+                    if(optionSnapshot.getKey().equals("takePhotos"))
+                        takePhotos = Boolean.parseBoolean((String)optionSnapshot.getValue());
+                    else if(optionSnapshot.getKey().equals("startOfMonthDay"))
+                        startOfMonthDay = Integer.parseInt((String)optionSnapshot.getValue());
                 }
             }
 
@@ -104,6 +106,7 @@ public class DataController {
     public static void UpdateEmployeeClockTimes(Employee emp){
         try {
             employeesRef.child(emp.getDBKey()).child("clockTimes").setValue(emp.getClockTimes());
+            employeesRef.child(emp.getDBKey()).child("currentClockType").setValue(emp.getCurrentClockType());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,10 +186,19 @@ public class DataController {
         }
     }
 
-    public static void SaveOptions(Map<String, Boolean> options){
-        for(Map.Entry<String, Boolean> option : options.entrySet()){
+    public static void SaveOptions(Map<String, String> options){
+        for(Map.Entry<String, String> option : options.entrySet()){
             optionsRef.child(option.getKey()).setValue(option.getValue());
         }
+    }
+
+    //Returns the hours worked in the current month.
+    public static String CalculateMonthsHours(Employee emp){
+        int hours = 0;
+        for(Map.Entry<String, Clocking> clocking : emp.getClockTimes().entrySet()){
+            //TODO: Calculate employees hours from start of month day to current day.
+        }
+        return Integer.toString(hours);
     }
 
     public static ArrayList<Employee> getEmployeeList() {
@@ -199,5 +211,9 @@ public class DataController {
 
     public static Boolean getTakePhotos() {
         return takePhotos;
+    }
+
+    public static Integer getStartOfMonthDay() {
+        return startOfMonthDay;
     }
 }

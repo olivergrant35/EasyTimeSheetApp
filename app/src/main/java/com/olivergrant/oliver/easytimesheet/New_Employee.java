@@ -31,7 +31,7 @@ public class New_Employee extends AppCompatActivity {
         buttonCreateEmployee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Need to check to make sure the names only contain letters.
+                //TODO: Add email verification to ensure it is a valid email.
                 if(!TextUtils.isEmpty(editTextFistname.getText()) && !TextUtils.isEmpty(editTextSurname.getText()) && !TextUtils.isEmpty(editTextEmail.getText())){
                     if (editTextFistname.getText().toString().matches("[a-zA-Z]+") && editTextSurname.getText().toString().matches("[a-zA-Z]+")) {
                         Employee emp = new Employee(editTextFistname.getText().toString(), editTextSurname.getText().toString(), editTextEmail.getText().toString());

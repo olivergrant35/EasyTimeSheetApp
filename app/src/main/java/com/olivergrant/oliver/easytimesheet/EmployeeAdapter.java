@@ -18,7 +18,7 @@ public class EmployeeAdapter  extends ArrayAdapter implements Filterable {
 
     public EmployeeAdapter(Context context, ArrayList<Employee> employees){
         super(context, 0, employees);
-        employees = employees;
+        this.employees = employees;
     }
 
     @NonNull

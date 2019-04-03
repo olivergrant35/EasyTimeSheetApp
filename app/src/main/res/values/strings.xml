@@ -19,10 +19,12 @@
     <string name="adminControlsCreateEmployeeTitle">Please fill out the following details.</string>
     <string name="adminOptionsTitle">Options</string>
     <string name="adminOptionsTakePhotos">Take photo when signing in? </string>
+    <string name="adminOptionsStartOfMonthDay">Day month starts: </string>
     <string name="adminOptionsSave">Save Optiions</string>
     <string name="goButton">Go</string>
     <string name="TestText">TestText</string>
     <string name="employeeListTitle">Current Employees</string>
     <string name="employeeListTotal">Total Employees:</string>
     <string name="employeeListSearch">Search:</string>
+    <string name="endOfMonthTitle">End-Of-Month Hours</string>
 </resources>

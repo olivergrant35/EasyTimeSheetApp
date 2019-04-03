@@ -172,7 +172,6 @@ public class Homepage extends AppCompatActivity {
                             }
                         });
                     }
-                    //TODO: Check if they have had a clock in already, if so, clock out. Need to consider multiple clocking in a day.
                     String code = qrCodes.valueAt(0).displayValue;
                     Employee emp = DataController.FindEmployeeByCode(code);
                     //Make sure employee was found, if so check their last clocktype and then add new one accordingly.
@@ -184,7 +183,7 @@ public class Homepage extends AppCompatActivity {
                             }
                             return;
                         }
-                        if(emp.getCurrentClockType() == ClockType.ClockIn){
+                        if(emp.CurrentClockTypeAsEnum() == ClockType.ClockIn){
                             emp.addClockTime(ClockType.ClockOut);
                             DataController.UpdateEmployeeClockTimes(emp);
                         }

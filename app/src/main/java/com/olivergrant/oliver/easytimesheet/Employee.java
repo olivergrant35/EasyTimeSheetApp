@@ -15,7 +15,6 @@ public class Employee {
     private String DBKey;
     private String Email;
     private Boolean IsAdmin;
-    //TODO: Need to store currentClockType in database. Might have to convert to string in getMethod. 
     private ClockType currentClockType;
     private Map<String, Clocking> ClockTimes = new HashMap<>();
 
@@ -29,6 +28,7 @@ public class Employee {
         Surname = surname.trim();
         Email = email.trim();
         EmployeeCode = DataController.NewEmployeeCode();
+        currentClockType = ClockType.ClockOut;
         Fullname = firstName + " " + surname + " ";
         IsAdmin = false;
     }
@@ -48,6 +48,7 @@ public class Employee {
     public void addClockTime(ClockType clockType) {
         Date date = Calendar.getInstance().getTime();
         String d = ConvertDateToString(date);
+        currentClockType = clockType;
         ClockTimes.put(d, new Clocking(d, clockType));
     }
 
@@ -79,12 +80,16 @@ public class Employee {
         Fullname = fullname;
     }
 
-    public ClockType getCurrentClockType() {
-        return currentClockType;
+    public String getCurrentClockType() {
+        return currentClockType.name();
     }
 
-    public void setCurrentClockType(ClockType currentClockType) {
-        this.currentClockType = currentClockType;
+    public void setCurrentClockType(String currentClockTypeString) {
+        this.currentClockType = ClockType.valueOf(currentClockTypeString);
+    }
+
+    public ClockType CurrentClockTypeAsEnum(){
+        return currentClockType;
     }
 
     public void setClockTimes(Map<String, Clocking> clockTimes) {

@@ -46,7 +46,7 @@ public class activity_codeScreen extends AppCompatActivity {
                             }
                             return;
                         }
-                        if(emp.getCurrentClockType() == ClockType.ClockIn){
+                        if(emp.CurrentClockTypeAsEnum() == ClockType.ClockIn){
                             emp.addClockTime(ClockType.ClockOut);
                             DataController.UpdateEmployeeClockTimes(emp);
                             finish();
