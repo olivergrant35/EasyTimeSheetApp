@@ -47,7 +47,7 @@ public class Employee {
 
     public void addClockTime(ClockType clockType) {
         Date date = Calendar.getInstance().getTime();
-        String d = ConvertDateToString(date);
+        String d = DataController.ConvertDateToString(date);
         currentClockType = clockType;
         ClockTimes.put(d, new Clocking(d, clockType));
     }
@@ -114,11 +114,5 @@ public class Employee {
 
     public void setAdmin(Boolean admin) {
         IsAdmin = admin;
-    }
-
-    private String ConvertDateToString(Date date){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        String d = sdf.format(date);
-        return d;
     }
 }

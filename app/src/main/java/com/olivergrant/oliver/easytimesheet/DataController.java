@@ -2,7 +2,6 @@ package com.olivergrant.oliver.easytimesheet;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -19,10 +18,14 @@ import com.google.firebase.storage.UploadTask;
 import com.google.zxing.WriterException;
 
 import java.io.File;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -38,9 +41,11 @@ public class DataController {
     private static String folderPath;
     private static String TAG = "DatabaseControllerError";
     private static Boolean takePhotos = false;
-    private static Integer startOfMonthDay = 1;
+    private static Integer startOfMonthDay;
 
     private static ArrayList<Employee> employeeList;
+
+    private static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
     //Want the controller to be static so cannot have constructor. Method gets called when Homepage loads.
     public static void StartController(File files) {
@@ -104,12 +109,28 @@ public class DataController {
 
     //Updates an employee when they add a new clock time.
     public static void UpdateEmployeeClockTimes(Employee emp){
-        try {
-            employeesRef.child(emp.getDBKey()).child("clockTimes").setValue(emp.getClockTimes());
-            employeesRef.child(emp.getDBKey()).child("currentClockType").setValue(emp.getCurrentClockType());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        employeesRef.child(emp.getDBKey()).child("clockTimes").setValue(emp.getClockTimes());
+        employeesRef.child(emp.getDBKey()).child("currentClockType").setValue(emp.getCurrentClockType());
+        //TODO: Decide if i should keep this or not.
+//        Calendar calendar = Calendar.getInstance();
+//        SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
+//        //Get start and end date.
+//        String startDate = CalculateStartingDate();
+//        String endDate = CalculateEndingDate(startDate);
+//
+//        //Get start and end month from the dates.
+//        String startMonth = GetDatesMonth(startDate);
+//        String endMonth = GetDatesMonth(endDate);
+//
+//        //Set the calendar to startmonth and get the name of that month. Repeat with endmonth.
+//        calendar.set(Calendar.YEAR, Integer.parseInt(startMonth)-1, Calendar.DAY_OF_MONTH);
+//        Date startDateAsDate = calendar.getTime();
+//        calendar.set(Calendar.MONTH, Integer.parseInt(endMonth)-1);
+//        Date endDateAsDate = calendar.getTime();
+//        String startMonthName = monthFormat.format(startDateAsDate);
+//        String endMonthName = monthFormat.format(endDateAsDate);
+//
+//        String clockingPeriod = startMonthName + " " + GetDatesYear(startDate) + " - " + endMonthName + " " + GetDatesYear(endDate);
     }
 
     //Generates a new and unique employee code.
@@ -194,11 +215,56 @@ public class DataController {
 
     //Returns the hours worked in the current month.
     public static String CalculateMonthsHours(Employee emp){
+        Date nowDate = new Date();
         int hours = 0;
-        for(Map.Entry<String, Clocking> clocking : emp.getClockTimes().entrySet()){
-            //TODO: Calculate employees hours from start of month day to current day.
+        String startDate = CalculateStartingDate();
+        String endDate = CalculateEndingDate(startDate);
+        Calendar.getInstance().setTime(nowDate);
+        Date todaysDate = Calendar.getInstance().getTime();
+
+        //Split each clocking into its day.
+        //TODO: Calculate employees hours from start of month day to current day.
+        for(int i=0; i <= emp.getClockTimes().size(); i++){
+            
         }
+        /*
+        1. Get all clocking that are from the start of month day to current day.
+        2.Seperate clocking into each day.
+        3. Convert all String date to Date.
+         */
         return Integer.toString(hours);
+    }
+
+    private static String CalculateStartingDate(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        if(calendar.get(Calendar.DAY_OF_MONTH) < startOfMonthDay){
+            calendar.add(Calendar.MONTH, -1);
+        }
+        calendar.set(Calendar.DAY_OF_MONTH, startOfMonthDay);
+        return sdf.format(calendar.getTime());
+    }
+
+    private static String CalculateEndingDate(String startDate){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(GetDatesDay(startDate)) - 1);
+        return sdf.format(calendar.getTime());
+    }
+
+    private static String GetDatesMonth(String date){
+        return date.substring(3, 5);
+    }
+
+    private static String GetDatesDay(String date){
+        return date.substring(0, 2);
+    }
+
+    private static String GetDatesYear(String date){
+        return date.substring(6,10);
+    }
+
+    private static String GetDatesTime(String date){
+        return date.substring(11);
     }
 
     public static ArrayList<Employee> getEmployeeList() {
@@ -215,5 +281,11 @@ public class DataController {
 
     public static Integer getStartOfMonthDay() {
         return startOfMonthDay;
+    }
+
+    public static String ConvertDateToString(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        String d = sdf.format(date);
+        return d;
     }
 }

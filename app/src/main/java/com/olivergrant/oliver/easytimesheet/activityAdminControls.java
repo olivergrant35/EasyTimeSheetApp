@@ -40,7 +40,6 @@ public class activityAdminControls extends AppCompatActivity {
         buttonEndOfMonthHours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Open page to which will display all of the employees hours for that current month.
                 startActivity(new Intent(activityAdminControls.this, activity_EndOfMonthHours.class));
                 /*
                 To display all of the hours for the current month, the hours will reset at the end of each month

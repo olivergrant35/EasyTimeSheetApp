@@ -8,7 +8,7 @@ public class Clocking {
     private String Date;
     private ClockType ClockingType;
 
-    //Default constructor for database.
+    //Default constructor for firebase.
     public Clocking(){
 
     }
