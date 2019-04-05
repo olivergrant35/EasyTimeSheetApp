@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class EndOfMonthHoursAdapter extends ArrayAdapter {
@@ -33,7 +34,11 @@ public class EndOfMonthHoursAdapter extends ArrayAdapter {
         TextView employeeHours = (TextView)convertView.findViewById(R.id.textViewEmployeeCode);
 
         employeeName.setText(employee.getFullname());
-        employeeHours.setText(DataController.CalculateMonthsHours(employee));
+        try {
+            employeeHours.setText(DataController.CalculateMonthsHours(employee));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return convertView;
     }

@@ -19,6 +19,7 @@ import com.google.zxing.WriterException;
 
 import java.io.File;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -214,24 +215,26 @@ public class DataController {
     }
 
     //Returns the hours worked in the current month.
-    public static String CalculateMonthsHours(Employee emp){
+    public static String CalculateMonthsHours(Employee emp) throws ParseException {
         Date nowDate = new Date();
         int hours = 0;
-        String startDate = CalculateStartingDate();
-        String endDate = CalculateEndingDate(startDate);
+        String startDateAsString = CalculateStartingDate();
+        String endDateAsString = CalculateEndingDate(startDateAsString);
+        Date startDateAsDate = sdf.parse(startDateAsString);
+        Date endDateAsDate = sdf.parse(endDateAsString);
         Calendar.getInstance().setTime(nowDate);
         Date todaysDate = Calendar.getInstance().getTime();
 
+        //Map<DateOfDay, hoursWorked>
+        Map<String, Clocking> clockingsByDay = new HashMap<>();
         //Split each clocking into its day.
         //TODO: Calculate employees hours from start of month day to current day.
-        for(int i=0; i <= emp.getClockTimes().size(); i++){
-            
+        for(Map.Entry<String, Clocking> clocking : emp.getClockTimes().entrySet()){
+            Date date = sdf.parse(GetClockingDate(clocking.getKey()));
+            if(date.compareTo(startDateAsDate) >= 0 && date.compareTo(endDateAsDate) <= 0){
+                //Check dates are on same day and calculate time between. 
+            }
         }
-        /*
-        1. Get all clocking that are from the start of month day to current day.
-        2.Seperate clocking into each day.
-        3. Convert all String date to Date.
-         */
         return Integer.toString(hours);
     }
 
@@ -263,6 +266,10 @@ public class DataController {
         return date.substring(6,10);
     }
 
+    private static String GetClockingDate(String date){
+        return date.substring(0, 10);
+    }
+
     private static String GetDatesTime(String date){
         return date.substring(11);
     }
@@ -284,8 +291,8 @@ public class DataController {
     }
 
     public static String ConvertDateToString(Date date){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        String d = sdf.format(date);
+        SimpleDateFormat sdft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        String d = sdft.format(date);
         return d;
     }
 }
