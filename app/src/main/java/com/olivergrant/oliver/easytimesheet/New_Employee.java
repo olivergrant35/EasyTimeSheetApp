@@ -50,6 +50,7 @@ public class New_Employee extends AppCompatActivity {
     }
 
     //Send the new employee an email with their code attached.
+    //TODO: Decide if I want to keep this. If so, need to get email working.
     public void SendCodeEmail(Employee emp){
         String[] TO = {"olivergrant35@gmail.com"};
         Intent emailIntent = new Intent(Intent.ACTION_SEND);

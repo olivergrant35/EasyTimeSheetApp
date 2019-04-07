@@ -18,13 +18,11 @@ import com.google.firebase.storage.UploadTask;
 import com.google.zxing.WriterException;
 
 import java.io.File;
-import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -47,6 +45,7 @@ public class DataController {
     private static ArrayList<Employee> employeeList;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+    private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     //Want the controller to be static so cannot have constructor. Method gets called when Homepage loads.
     public static void StartController(File files) {
@@ -110,6 +109,7 @@ public class DataController {
 
     //Updates an employee when they add a new clock time.
     public static void UpdateEmployeeClockTimes(Employee emp){
+        String key = employeesRef.push().getKey();
         employeesRef.child(emp.getDBKey()).child("clockTimes").setValue(emp.getClockTimes());
         employeesRef.child(emp.getDBKey()).child("currentClockType").setValue(emp.getCurrentClockType());
         //TODO: Decide if i should keep this or not.
@@ -148,10 +148,14 @@ public class DataController {
 
     private static boolean CheckIfCodeExists(String code){
         boolean result = false;
-        for(Employee emp : employeeList){
-            if(emp.getEmployeeCode().equals(code)){
-                result = true;
+        if (employeeList != null) {
+            for(Employee emp : employeeList){
+                if(emp.getEmployeeCode().equals(code)){
+                    result = true;
+                }
             }
+        }else{
+            return false;
         }
         return result;
     }
@@ -218,6 +222,7 @@ public class DataController {
     public static String CalculateMonthsHours(Employee emp) throws ParseException {
         Date nowDate = new Date();
         int hours = 0;
+        long difference = 0;
         String startDateAsString = CalculateStartingDate();
         String endDateAsString = CalculateEndingDate(startDateAsString);
         Date startDateAsDate = sdf.parse(startDateAsString);
@@ -226,13 +231,16 @@ public class DataController {
         Date todaysDate = Calendar.getInstance().getTime();
 
         //Map<DateOfDay, hoursWorked>
-        Map<String, Clocking> clockingsByDay = new HashMap<>();
+        Boolean isClockIn = false;
         //Split each clocking into its day.
         //TODO: Calculate employees hours from start of month day to current day.
-        for(Map.Entry<String, Clocking> clocking : emp.getClockTimes().entrySet()){
-            Date date = sdf.parse(GetClockingDate(clocking.getKey()));
+        for (int i=0; i<emp.getClockTimes().size(); i+=2){
+            Date date = sdf.parse(GetClockingDate(emp.getClockTimes().get(i).getDate()));
+            //If date is inbetween the start and end date.
             if(date.compareTo(startDateAsDate) >= 0 && date.compareTo(endDateAsDate) <= 0){
-                //Check dates are on same day and calculate time between. 
+                Date date1 = timeFormat.parse(GetDatesTime(emp.getClockTimes().get(i).getDate()));
+                Date date2 = timeFormat.parse(GetDatesTime(emp.getClockTimes().get(i+1).getDate()));
+                difference = (date2.getTime() - date1.getTime()) / 1000;
             }
         }
         return Integer.toString(hours);
