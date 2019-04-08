@@ -1,10 +1,8 @@
 package com.olivergrant.oliver.easytimesheet;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Employee {
 
@@ -16,7 +14,7 @@ public class Employee {
     private String Email;
     private Boolean IsAdmin;
     private ClockType currentClockType;
-    private Map<String, Clocking> ClockTimes = new HashMap<>();
+    private ArrayList<Clocking> ClockTimes = new ArrayList<>();
 
     //Default constructor for firebase database.
     public Employee(){
@@ -41,7 +39,7 @@ public class Employee {
         return Fullname;
     }
 
-    public Map<String, Clocking> getClockTimes() {
+    public ArrayList<Clocking> getClockTimes() {
         return ClockTimes;
     }
 
@@ -49,7 +47,7 @@ public class Employee {
         Date date = Calendar.getInstance().getTime();
         String d = DataController.ConvertDateToString(date);
         currentClockType = clockType;
-        ClockTimes.put(d, new Clocking(d, clockType));
+        ClockTimes.add(new Clocking(d, clockType));
     }
 
     public String getFirstName() {
@@ -92,7 +90,7 @@ public class Employee {
         return currentClockType;
     }
 
-    public void setClockTimes(Map<String, Clocking> clockTimes) {
+    public void setClockTimes(ArrayList<Clocking> clockTimes) {
         ClockTimes = clockTimes;
     }
 
