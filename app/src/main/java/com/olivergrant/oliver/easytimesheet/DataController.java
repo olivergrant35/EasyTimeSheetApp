@@ -232,7 +232,7 @@ public class DataController {
         for(Map.Entry<String, Clocking> clocking : emp.getClockTimes().entrySet()){
             Date date = sdf.parse(GetClockingDate(clocking.getKey()));
             if(date.compareTo(startDateAsDate) >= 0 && date.compareTo(endDateAsDate) <= 0){
-                //Check dates are on same day and calculate time between. 
+                //Check dates are on same day and calculate time between.
             }
         }
         return Integer.toString(hours);
