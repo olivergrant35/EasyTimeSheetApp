@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class activity_codeScreen extends AppCompatActivity {
 
     String TAG = "CodeScreenError";
     Boolean activityOpen = false;
+    String clockType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class activity_codeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 if (codeField.getText().length() == 4) {
                     String code = codeField.getText().toString();
-                    Employee emp = DataController.FindEmployeeByCode(code);
+                    final Employee emp = DataController.FindEmployeeByCode(code);
                     //Make sure employee was found, if so check their last clocktype and then add new one accordingly.
                     if(emp != null){
                         if(emp.getAdmin()){
@@ -49,16 +51,31 @@ public class activity_codeScreen extends AppCompatActivity {
                         if(emp.CurrentClockTypeAsEnum() == ClockType.ClockIn){
                             emp.addClockTime(ClockType.ClockOut);
                             DataController.UpdateEmployeeClockTimes(emp);
+                            clockType = " Clocked out.";
                             finish();
                         }
                         else{
                             emp.addClockTime(ClockType.ClockIn);
                             DataController.UpdateEmployeeClockTimes(emp);
+                            clockType = " Clocked in.";
                             finish();
                         }
+                        //Make toast, informing user they have been signed in or out.
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(activity_codeScreen.this, emp.getFullname() + " " + clockType, Toast.LENGTH_LONG).show();
+                            }
+                        });
                         Log.d(TAG, "Employee has been found");
                     }else{
                         Log.d(TAG, "Employee not found");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(activity_codeScreen.this, "Employee not found.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 }
             }

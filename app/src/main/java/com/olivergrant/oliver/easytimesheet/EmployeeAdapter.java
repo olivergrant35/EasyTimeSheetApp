@@ -34,7 +34,7 @@ public class EmployeeAdapter  extends ArrayAdapter implements Filterable {
         TextView employeeCode = (TextView)convertView.findViewById(R.id.textViewEmployeeCode);
 
         employeeName.setText(employee.getFullname());
-        employeeCode.setText(employee.getEmployeeCode());
+        employeeCode.setText("Code: " + employee.getEmployeeCode());
 
         return convertView;
     }

@@ -27,11 +27,11 @@ public class EndOfMonthHoursAdapter extends ArrayAdapter {
         Employee employee = (Employee)getItem(position);
 
         if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.employee_list_layout, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.end_of_month_list_layout, parent, false);
         }
 
-        TextView employeeName = (TextView)convertView.findViewById(R.id.textViewEmployeeName);
-        TextView employeeHours = (TextView)convertView.findViewById(R.id.textViewEmployeeCode);
+        TextView employeeName = (TextView)convertView.findViewById(R.id.textViewEmployeeName1);
+        TextView employeeHours = (TextView)convertView.findViewById(R.id.textViewEmployeeHours);
 
         employeeName.setText(employee.getFullname());
         try {

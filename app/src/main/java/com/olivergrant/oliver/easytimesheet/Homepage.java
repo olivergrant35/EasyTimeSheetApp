@@ -153,47 +153,60 @@ public class Homepage extends AppCompatActivity {
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
-
+                final String code;
                 if(qrCodes.size() !=0){
-                    if(qrCodes.valueAt(0).displayValue.length() == 4){
+                    code = qrCodes.valueAt(0).displayValue;
+                    if(code.length() == 4){
                         if (!activityOpen) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(Homepage.this, "Code: " + qrCodes.valueAt(0).displayValue, Toast.LENGTH_LONG).show();
+                            final Employee emp = DataController.FindEmployeeByCode(code);
+                            //Make sure employee was found.
+                            if(emp != null){
+                                if(emp.getAdmin()){
+                                    if(!activityOpen){
+                                        activityOpen = true;
+                                        startActivity(new Intent(Homepage.this, activityAdminControls.class));
+                                    }
+                                    return;
                                 }
-                            });
+                                final String clockType;
+                                //Check current clock type and add new one accordingly.
+                                if(emp.CurrentClockTypeAsEnum() == ClockType.ClockIn){
+                                    emp.addClockTime(ClockType.ClockOut);
+                                    DataController.UpdateEmployeeClockTimes(emp);
+                                    clockType = " Clocked out.";
+                                }
+                                else{
+                                    emp.addClockTime(ClockType.ClockIn);
+                                    DataController.UpdateEmployeeClockTimes(emp);
+                                    clockType = " Clocked in.";
+                                }
+                                //Make toast, informing user they have been signed in or out.
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(Homepage.this, emp.getFullname() + " " + clockType, Toast.LENGTH_LONG).show();
+                                    }
+                                });
+
+                                Log.d(TAG, "Employee has been found");
+                            }else{
+                                Log.d(TAG, "Employee not found");
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(Homepage.this, "Employee not found.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                return;
+                            }
                         }
                     }else{
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(Homepage.this, "Invalid Login", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Homepage.this, "Invalid QR code.", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }
-                    String code = qrCodes.valueAt(0).displayValue;
-                    Employee emp = DataController.FindEmployeeByCode(code);
-                    //Make sure employee was found, if so check their last clocktype and then add new one accordingly.
-                    if(emp != null){
-                        if(emp.getAdmin()){
-                            if(!activityOpen){
-                                activityOpen = true;
-                                startActivity(new Intent(Homepage.this, activityAdminControls.class));
-                            }
-                            return;
-                        }
-                        if(emp.CurrentClockTypeAsEnum() == ClockType.ClockIn){
-                            emp.addClockTime(ClockType.ClockOut);
-                            DataController.UpdateEmployeeClockTimes(emp);
-                        }
-                        else{
-                            emp.addClockTime(ClockType.ClockIn);
-                            DataController.UpdateEmployeeClockTimes(emp);
-                        }
-                        Log.d(TAG, "Employee has been found");
-                    }else{
-                        Log.d(TAG, "Employee not found");
                     }
                 }
             }
