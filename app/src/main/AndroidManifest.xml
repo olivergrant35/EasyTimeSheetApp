@@ -15,24 +15,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity_EndOfMonthHours"></activity>
-        <activity android:name=".activity_AdminOptions" />
-        <activity android:name=".activity_EmployeeList" />
-        <activity android:name=".Homepage">
+        <activity android:name=".activity_EndOfMonthHours"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".activity_AdminOptions" android:screenOrientation="portrait"/>
+        <activity android:name=".activity_EmployeeList" android:screenOrientation="portrait"/>
+        <activity android:name=".Homepage" android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity_codeScreen" />
-        <activity android:name=".activityAdminControls" />
+        <activity android:name=".activity_codeScreen" android:screenOrientation="portrait" />
+        <activity android:name=".activityAdminControls" android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.gms.version.DEPENDENCIES"
             android:value="barcode" />
 
-        <activity android:name=".New_Employee" />
+        <activity android:name=".New_Employee" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

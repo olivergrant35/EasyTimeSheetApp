@@ -41,9 +41,7 @@ public class DataController {
     private static String TAG = "DatabaseControllerError";
     private static Boolean takePhotos = false;
     private static Integer startOfMonthDay;
-
     private static ArrayList<Employee> employeeList;
-
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
@@ -57,6 +55,8 @@ public class DataController {
         folderPath = filesDir + "/EasyTimesheetImages";
         SetUpRequiredFolders();
         employeeList = new ArrayList<>();
+
+        //Event listeners for the employees and options saved on database. Updates if change is made.
         employeesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -107,31 +107,11 @@ public class DataController {
         employeesRef.child(key).setValue(emp);
     }
 
-    //Updates an employee when they add a new clock time.
+    //Updates an employee on the database when they add a new clock time.
     public static void UpdateEmployeeClockTimes(Employee emp){
         String key = employeesRef.push().getKey();
         employeesRef.child(emp.getDBKey()).child("clockTimes").setValue(emp.getClockTimes());
         employeesRef.child(emp.getDBKey()).child("currentClockType").setValue(emp.getCurrentClockType());
-        //TODO: Decide if i should keep this or not.
-//        Calendar calendar = Calendar.getInstance();
-//        SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
-//        //Get start and end date.
-//        String startDate = CalculateStartingDate();
-//        String endDate = CalculateEndingDate(startDate);
-//
-//        //Get start and end month from the dates.
-//        String startMonth = GetDatesMonth(startDate);
-//        String endMonth = GetDatesMonth(endDate);
-//
-//        //Set the calendar to startmonth and get the name of that month. Repeat with endmonth.
-//        calendar.set(Calendar.YEAR, Integer.parseInt(startMonth)-1, Calendar.DAY_OF_MONTH);
-//        Date startDateAsDate = calendar.getTime();
-//        calendar.set(Calendar.MONTH, Integer.parseInt(endMonth)-1);
-//        Date endDateAsDate = calendar.getTime();
-//        String startMonthName = monthFormat.format(startDateAsDate);
-//        String endMonthName = monthFormat.format(endDateAsDate);
-//
-//        String clockingPeriod = startMonthName + " " + GetDatesYear(startDate) + " - " + endMonthName + " " + GetDatesYear(endDate);
     }
 
     //Generates a new and unique employee code.
@@ -146,6 +126,7 @@ public class DataController {
         return Integer.toString(num);
     }
 
+    //Checks if an employee code already exists.
     private static boolean CheckIfCodeExists(String code){
         boolean result = false;
         if (employeeList != null) {
@@ -194,6 +175,7 @@ public class DataController {
     }
 
     //Get image from database for passed Employee
+    //TODO: Decide what way I want the user to be able to see the employee photos.
     public static void GetImagesFromDatabase(Employee emp){
 
     }
@@ -212,16 +194,18 @@ public class DataController {
         }
     }
 
+    //Saves the options to the database.
     public static void SaveOptions(Map<String, String> options){
         for(Map.Entry<String, String> option : options.entrySet()){
             optionsRef.child(option.getKey()).setValue(option.getValue());
         }
     }
 
-    //Returns the hours worked in the current month.
+    //Returns the hours worked for given employee in the current month.
     public static String CalculateMonthsHours(Employee emp) throws ParseException {
         Date nowDate = new Date();
         int hours = 0;
+        int mins = 0;
         long difference = 0;
         String startDateAsString = CalculateStartingDate();
         String endDateAsString = CalculateEndingDate(startDateAsString);
@@ -236,16 +220,21 @@ public class DataController {
         //TODO: Calculate employees hours from start of month day to current day.
         for (int i=0; i<emp.getClockTimes().size(); i+=2){
             Date date = sdf.parse(GetClockingDate(emp.getClockTimes().get(i).getDate()));
-            //If date is inbetween the start and end date.
+            //Check if date is inbetween the start and end date.
             if(date.compareTo(startDateAsDate) >= 0 && date.compareTo(endDateAsDate) <= 0){
+                //Format the clocking dates into the time format.
                 Date date1 = timeFormat.parse(GetDatesTime(emp.getClockTimes().get(i).getDate()));
                 Date date2 = timeFormat.parse(GetDatesTime(emp.getClockTimes().get(i+1).getDate()));
-                difference = (date2.getTime() - date1.getTime()) / 1000;
+                //Calculate difference, then work out the hours and minuets from the difference which is in milliseconds.
+                difference = date2.getTime() - date1.getTime();
+                hours += (int)(difference / (1000 * 60 * 60));
+                mins += (int)(difference/(1000*60)) % 60;
             }
         }
-        return Integer.toString(hours);
+        return Integer.toString(hours) + " Hours " + Integer.toString(mins) + " Mins";
     }
 
+    //Calculates the starting date of the current month for payments.
     private static String CalculateStartingDate(){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
@@ -256,12 +245,21 @@ public class DataController {
         return sdf.format(calendar.getTime());
     }
 
+    //Calculates the ending date of the current month for payments.
     private static String CalculateEndingDate(String startDate){
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(GetDatesDay(startDate)) - 1);
         return sdf.format(calendar.getTime());
     }
 
+    //Converts a Date object to a string in the given format.
+    public static String ConvertDateToString(Date date){
+        SimpleDateFormat sdft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        String d = sdft.format(date);
+        return d;
+    }
+
+    //Getters and setters.
     private static String GetDatesMonth(String date){
         return date.substring(3, 5);
     }
@@ -296,11 +294,5 @@ public class DataController {
 
     public static Integer getStartOfMonthDay() {
         return startOfMonthDay;
-    }
-
-    public static String ConvertDateToString(Date date){
-        SimpleDateFormat sdft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        String d = sdft.format(date);
-        return d;
     }
 }
