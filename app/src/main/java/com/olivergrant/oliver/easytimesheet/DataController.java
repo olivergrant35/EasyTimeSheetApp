@@ -217,7 +217,7 @@ public class DataController {
         //Map<DateOfDay, hoursWorked>
         Boolean isClockIn = false;
         //Split each clocking into its day.
-        //TODO: Calculate employees hours from start of month day to current day.
+        //TODO: Test this with changing the date in options.
         for (int i=0; i<emp.getClockTimes().size(); i+=2){
             Date date = sdf.parse(GetClockingDate(emp.getClockTimes().get(i).getDate()));
             //Check if date is inbetween the start and end date.

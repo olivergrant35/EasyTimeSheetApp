@@ -11,12 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class New_Employee extends AppCompatActivity {
 
-    Button buttonCreateEmployee;
-    EditText editTextFistname;
-    EditText editTextSurname;
-    EditText editTextEmail;
+    private static final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
+    private static Pattern pattern;
+    private static Matcher matcher;
+
+    private Button buttonCreateEmployee;
+    private EditText editTextFistname;
+    private EditText editTextSurname;
+    private EditText editTextEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +41,15 @@ public class New_Employee extends AppCompatActivity {
                 //TODO: Add email verification to ensure it is a valid email.
                 if(!TextUtils.isEmpty(editTextFistname.getText()) && !TextUtils.isEmpty(editTextSurname.getText()) && !TextUtils.isEmpty(editTextEmail.getText())){
                     if (editTextFistname.getText().toString().matches("[a-zA-Z]+") && editTextSurname.getText().toString().matches("[a-zA-Z]+")) {
-                        Employee emp = new Employee(editTextFistname.getText().toString(), editTextSurname.getText().toString(), editTextEmail.getText().toString());
-                        DataController.WriteNewEmployee(emp);
-                        Toast.makeText(New_Employee.this, "New employee created.", Toast.LENGTH_SHORT).show();
-                        //SendCodeEmail(emp);
-                        finish();
+                        if (ValidateEmail(editTextEmail.getText().toString())) {
+                            Employee emp = new Employee(editTextFistname.getText().toString(), editTextSurname.getText().toString(), editTextEmail.getText().toString());
+                            DataController.WriteNewEmployee(emp);
+                            Toast.makeText(New_Employee.this, "New employee created.", Toast.LENGTH_SHORT).show();
+                            //SendCodeEmail(emp);
+                            finish();
+                        }else {
+                            Toast.makeText(New_Employee.this, "Please enter a valid email address.", Toast.LENGTH_SHORT).show();
+                        }
                     }else {
                         Toast.makeText(New_Employee.this, "Fistname and Surname can only contain letters. (a-z)", Toast.LENGTH_SHORT).show();
                     }
@@ -47,6 +58,11 @@ public class New_Employee extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean ValidateEmail(String email){
+        matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     //Send the new employee an email with their code attached.
