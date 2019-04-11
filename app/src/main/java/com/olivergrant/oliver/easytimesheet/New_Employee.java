@@ -30,6 +30,8 @@ public class New_Employee extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new__employee);
 
+        pattern = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
+
         buttonCreateEmployee = findViewById(R.id.buttonCreateEmployee);
         editTextFistname = findViewById(R.id.editTextFirstname);
         editTextSurname = findViewById(R.id.editTextSurname);
@@ -38,7 +40,6 @@ public class New_Employee extends AppCompatActivity {
         buttonCreateEmployee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Add email verification to ensure it is a valid email.
                 if(!TextUtils.isEmpty(editTextFistname.getText()) && !TextUtils.isEmpty(editTextSurname.getText()) && !TextUtils.isEmpty(editTextEmail.getText())){
                     if (editTextFistname.getText().toString().matches("[a-zA-Z]+") && editTextSurname.getText().toString().matches("[a-zA-Z]+")) {
                         if (ValidateEmail(editTextEmail.getText().toString())) {
@@ -63,27 +64,5 @@ public class New_Employee extends AppCompatActivity {
     private boolean ValidateEmail(String email){
         matcher = pattern.matcher(email);
         return matcher.matches();
-    }
-
-    //Send the new employee an email with their code attached.
-    //TODO: Decide if I want to keep this. If so, need to get email working.
-    public void SendCodeEmail(Employee emp){
-        String[] TO = {"olivergrant35@gmail.com"};
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-
-        emailIntent.setData(Uri.parse("mailto:"));
-        emailIntent.setType("text/plain");
-
-
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your QR Code");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "You should find your QR code attached.");
-
-        try {
-            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-            Log.i("Finished sending email...", "");
-        } catch (android.content.ActivityNotFoundException ex) {
-            Log.d("NewEmployeeError", ex.getMessage());
-        }
     }
 }

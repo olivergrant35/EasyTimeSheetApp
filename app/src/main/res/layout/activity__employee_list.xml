@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity_EmployeeList"
+    android:background="#C4C4C4"
     android:orientation="vertical">
 
     <TextView
@@ -14,7 +15,8 @@
         android:layout_gravity="center_horizontal"
         android:text="@string/employeeListTitle"
         android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:textColor="#000000"/>
 
     <TextView
         android:id="@+id/textViewNumOfEmployees"
@@ -24,22 +26,25 @@
         android:text="@string/employeeListTitle"
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:textColor="#000000"/>
     
 
     <EditText
         android:id="@+id/editTextEmployeeSearchBar"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edittext_layout"/>
 
     <ListView
         android:id="@+id/listViewEmployees"
         android:layout_width="300dp"
-        android:layout_height="450dp"
+        android:layout_height="400dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/edittext_layout"/>
 
 </LinearLayout>

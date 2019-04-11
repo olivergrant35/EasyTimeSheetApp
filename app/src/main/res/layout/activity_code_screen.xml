@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity_codeScreen"
+    android:background="#C4C4C4"
     android:orientation="vertical">
 
     <TextView
@@ -17,7 +18,8 @@
         android:text="@string/textViewInstructionQR"
         android:textSize="30sp"
         android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:textColor="#000000"/>
 
     <EditText
         android:id="@+id/editTextCodeField"
@@ -25,7 +27,6 @@
         android:layout_height="44dp"
         android:padding="3dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/layout_border"
         android:ems="10"
         android:textSize="30sp"
         android:importantForAutofill="no"
@@ -33,7 +34,8 @@
         android:text="@string/codeTyped"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
-        android:maxLength="4">
+        android:maxLength="4"
+        android:background="@drawable/edittext_layout">
         <requestFocus/>
     </EditText>
 
@@ -43,7 +45,8 @@
         android:layout_height="150dp"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/goButton" />
+        android:text="@string/goButton"
+        android:background="@drawable/button_layout"/>
 
     <TextView
         android:id="@+id/textView2"
@@ -52,7 +55,8 @@
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
         android:text="@string/textViewInstructionOr"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:textColor="#000000"/>
 
     <Button
         android:id="@+id/buttonScanQRCode"
@@ -60,6 +64,7 @@
         android:layout_height="150dp"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/signInButtonQR"/>
+        android:text="@string/signInButtonQR"
+        android:background="@drawable/button_layout"/>
 
 </LinearLayout>

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity_AdminOptions"
+    android:background="#C4C4C4"
     android:orientation="vertical">
 
     <TextView
@@ -13,7 +14,8 @@
         android:text="@string/adminOptionsTitle"
         android:textSize="50sp"
         android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:textColor="#000000"/>
 
     <Switch
         android:id="@+id/switchTakePhotos"
@@ -22,7 +24,8 @@
         android:layout_gravity="center_horizontal"
         android:text="@string/adminOptionsTakePhotos"
         android:textSize="15sp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:textColor="#000000"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -42,16 +45,17 @@
             android:id="@+id/editTextMonthStartDay"
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:gravity="center_horizontal"/>
+            android:background="@drawable/edittext_layout"/>
 
     </LinearLayout>
 
     <Button
         android:id="@+id/buttonSaveOptions"
         android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:text="@string/adminOptionsSave"/>
+        android:text="@string/adminOptionsSave"
+        android:background="@drawable/button_layout"/>
 
 </LinearLayout>

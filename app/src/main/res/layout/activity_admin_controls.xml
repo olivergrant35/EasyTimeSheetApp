@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activityAdminControls"
+    android:background="#C4C4C4"
     android:orientation="vertical">
 
     <TextView
@@ -14,37 +15,42 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:text="@string/adminControlsTitle"
-        android:textSize="50sp"/>
+        android:textSize="50sp"
+        android:textColor="#000000"/>
 
     <Button
         android:id="@+id/buttonCurrentEmployees"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:text="@string/adminControlsCurrentEmployees"/>
+        android:layout_marginTop="30dp"
+        android:text="@string/adminControlsCurrentEmployees"
+        android:background="@drawable/button_layout"/>
 
     <Button
         android:id="@+id/buttonNewEmployee"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:text="@string/adminControlsNewEmployee"/>
+        android:text="@string/adminControlsNewEmployee"
+        android:background="@drawable/button_layout"/>
 
     <Button
         android:id="@+id/buttonEndOfMonthHours"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:text="@string/adminControlsEndOfMonthHours" />
+        android:text="@string/adminControlsEndOfMonthHours"
+        android:background="@drawable/button_layout"/>
 
     <Button
         android:id="@+id/buttonOptions"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
         android:text="@string/adminControlsOptions"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_layout"/>
 </LinearLayout>

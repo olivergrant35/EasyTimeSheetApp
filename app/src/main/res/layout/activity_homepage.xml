@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Homepage"
+    android:background="#C4C4C4"
     android:orientation="vertical">
 
     <FrameLayout
@@ -12,7 +13,7 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="30dp">
 
         <SurfaceView
             android:layout_width="match_parent"
@@ -29,7 +30,7 @@
         android:layout_marginTop="20dp"
         android:text="@string/textViewInstruction"
         android:textSize="24sp"
-        android:textColor="#505050"/>
+        android:textColor="#000000"/>
 
     <TextView
         android:id="@+id/textViewInstructionOr"
@@ -39,7 +40,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/textViewInstructionOr"
         android:textSize="24sp"
-        android:textColor="#505050"/>
+        android:textColor="#000000"/>
 
     <Button
         android:id="@+id/buttonChangeSignInMethod"
@@ -47,6 +48,7 @@
         android:layout_height="150dp"
         android:text="@string/signInButtonCode"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_layout"/>
 
 </LinearLayout>

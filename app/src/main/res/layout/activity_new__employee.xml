@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#C4C4C4"
     tools:context=".New_Employee">
 
     <TextView
@@ -14,7 +15,7 @@
         android:layout_marginStart="19dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="19dp"
-        android:textColor="#505050"
+        android:textColor="#000000"
         android:text="@string/adminControlsCreateEmployeeTitle"
         android:textSize="24sp" />
 
@@ -24,7 +25,7 @@
         android:text="Firstname:"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="#505050"
+        android:textColor="#000000"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="105dp"/>
 
@@ -32,7 +33,10 @@
         android:id="@+id/editTextFirstname"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:background="@drawable/edittext_layout"
+        android:maxLines="1"
+        android:inputType="text"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,13 +46,16 @@
         android:textStyle="bold"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="105dp"
-        android:textColor="#505050"/>
+        android:textColor="#000000"/>
 
     <EditText
         android:id="@+id/editTextSurname"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:background="@drawable/edittext_layout"
+        android:maxLines="1"
+        android:inputType="text"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,19 +65,23 @@
         android:textStyle="bold"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="105dp"
-        android:textColor="#505050"/>
+        android:textColor="#000000"/>
 
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:background="@drawable/edittext_layout"
+        android:maxLines="1"
+        android:inputType="text"/>
 
     <Button
         android:id="@+id/buttonCreateEmployee"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:text="@string/adminControlCreateEmployee"/>
+        android:text="@string/adminControlCreateEmployee"
+        android:background="@drawable/button_layout"/>
 </LinearLayout>

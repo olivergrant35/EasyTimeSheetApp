@@ -11,13 +11,13 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:textColor="#505050"/>
+        android:textColor="#000000"/>
 
     <TextView
         android:id="@+id/textViewEmployeeHours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:textColor="#505050"/>
+        android:textColor="#000000"/>
 
 </LinearLayout>
