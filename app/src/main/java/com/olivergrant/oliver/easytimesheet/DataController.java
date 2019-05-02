@@ -1,6 +1,7 @@
 package com.olivergrant.oliver.easytimesheet;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class DataController {
     private static DatabaseReference employeesRef;
     private static DatabaseReference optionsRef;
     private static StorageReference qrStorageRef;
+    private static StorageReference empImgStorageRef;
     private static File filesDir;
     private static String folderPath;
     private static String TAG = "DatabaseControllerError";
@@ -51,6 +53,7 @@ public class DataController {
         employeesRef = database.getReference("Employees");
         optionsRef = database.getReference("Options");
         qrStorageRef = FirebaseStorage.getInstance().getReference("QRCodes");
+        empImgStorageRef = FirebaseStorage.getInstance().getReference("EmployeeImages");
         filesDir = files;
         folderPath = filesDir + "/EasyTimesheetImages";
         SetUpRequiredFolders();
@@ -151,7 +154,7 @@ public class DataController {
     }
 
     //Save the image to database with the name being the employee code.
-    public static void SaveImageToDatabase(String imageName, String code){
+    public static void SaveQRImageToDatabase(String imageName, String code){
         final Uri file = Uri.fromFile(new File(folderPath + "/" + imageName + ".jpg"));
         final File f = new File(folderPath + "/" + imageName + ".jpg");
         StorageReference codeRef = qrStorageRef.child(code);
@@ -174,6 +177,28 @@ public class DataController {
                 });
     }
 
+    public static void SaveEmployeeImageToDatabase(String code, Bitmap bitmap){
+        Date c = Calendar.getInstance().getTime();
+        String imageName = code + " " + ConvertDateToString(c);
+        try {
+            QRGSaver.save(folderPath + "/", imageName, bitmap, QRGContents.ImageType.IMAGE_JPEG);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+
+        final Uri file = Uri.fromFile(new File(folderPath + "/" + imageName + ".jpg"));
+        final File f = new File(folderPath + "/" + imageName + ".jpg");
+        StorageReference imgRef = empImgStorageRef.child(imageName);
+
+        imgRef.putFile(file)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        f.delete();
+                    }
+                });
+    }
+
     //Get image from database for passed Employee
     //TODO: Decide what way I want the user to be able to see the employee photos.
     public static void GetImagesFromDatabase(Employee emp){
@@ -186,9 +211,8 @@ public class DataController {
         String imageName = "QRCode" + code;
         try {
             Bitmap b = qrencoder.encodeAsBitmap();
-            boolean save;
-            save = QRGSaver.save(folderPath + "/", imageName, b, QRGContents.ImageType.IMAGE_JPEG);
-            SaveImageToDatabase(imageName, code);
+            QRGSaver.save(folderPath + "/", imageName, b, QRGContents.ImageType.IMAGE_JPEG);
+            SaveQRImageToDatabase(imageName, code);
         }catch (WriterException e){
             Log.v("EMPLOYEE ERROR", e.toString());
         }

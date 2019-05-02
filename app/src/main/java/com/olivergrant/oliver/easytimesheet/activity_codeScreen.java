@@ -60,6 +60,10 @@ public class activity_codeScreen extends AppCompatActivity {
                             clockType = " Clocked in.";
                             finish();
                         }
+                        if(DataController.getTakePhotos()){
+                            Homepage.takePhoto(emp.getEmployeeCode());
+                            finish();
+                        }
                         //Make toast, informing user they have been signed in or out.
                         runOnUiThread(new Runnable() {
                             @Override

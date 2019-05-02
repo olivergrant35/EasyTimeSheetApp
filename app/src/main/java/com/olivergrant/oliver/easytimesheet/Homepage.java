@@ -3,6 +3,9 @@ package com.olivergrant.oliver.easytimesheet;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +17,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
@@ -30,10 +34,14 @@ public class Homepage extends AppCompatActivity {
     static final int REQUEST_READ_STORAGE = 1003;
 
     SurfaceView surfaceView;
-    CameraSource cameraSource;
+    static CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
     String TAG = "HomepageTAG";
     Boolean activityOpen = false;
+    static TextView textViewInstruction;
+    static TextView textViewInstructionOr;
+    static Button buttonChangeSignInMethod;
+    static TextView textViewCountdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +77,11 @@ public class Homepage extends AppCompatActivity {
         //After permissions have been checked, start controller
         DataController.StartController(Environment.getExternalStorageDirectory());
 
-        //Getting that buttons
-        final Button buttonChangeSignInMethod = findViewById(R.id.buttonChangeSignInMethod);
+        //Getting controls
+        textViewInstruction = findViewById(R.id.textViewInstruction);
+        textViewInstructionOr = findViewById(R.id.textViewInstructionOr);
+        buttonChangeSignInMethod = findViewById(R.id.buttonChangeSignInMethod);
+        textViewCountdown = findViewById(R.id.textViewCountDown);
 
         //Adding click listeners to the buttons and giving them functionality.
         buttonChangeSignInMethod.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +127,8 @@ public class Homepage extends AppCompatActivity {
 
         //TODO: uncomment setFacing to change camera to front cam. Set to rear for testing.
         cameraSource = new CameraSource.Builder(this, barcodeDetector)
-                //.setFacing(1)
+                .setFacing(1)
+                .setAutoFocusEnabled(true)
                 .setRequestedPreviewSize(300, 300).build();
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -180,17 +192,19 @@ public class Homepage extends AppCompatActivity {
                                     DataController.UpdateEmployeeClockTimes(emp);
                                     clockType = " Clocked in.";
                                 }
-                                //Make toast, informing user they have been signed in or out.
+                                //Check if company has take photos option enabled.
+                                if(DataController.getTakePhotos()){
+                                    takePhoto(emp.getEmployeeCode());
+                                }
+                                //Make toast, informing user they have been clocked in or out.
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         Toast.makeText(Homepage.this, emp.getFullname() + " " + clockType, Toast.LENGTH_LONG).show();
                                     }
                                 });
-
-                                Log.d(TAG, "Employee has been found");
                             }else{
-                                Log.d(TAG, "Employee not found");
+                                //Make toast, informing user that an employee with that code has not been found.
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -211,6 +225,42 @@ public class Homepage extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public static void takePhoto(final String code){
+        textViewInstruction.setVisibility(View.GONE);
+        textViewInstructionOr.setVisibility(View.GONE);
+        buttonChangeSignInMethod.setVisibility(View.GONE);
+
+        textViewCountdown.setVisibility(View.VISIBLE);
+        textViewCountdown.setTextSize(150f);
+
+        CountDownTimer cdt = new CountDownTimer(4000, 1000) {
+            int timerTime = 3;
+            @Override
+            public void onTick(long millisUntilFinished) {
+                textViewCountdown.setText(String.valueOf(timerTime));
+                timerTime -= 1;
+            }
+
+            @Override
+            public void onFinish() {
+                cameraSource.takePicture(null, new CameraSource.PictureCallback() {
+                    @Override
+                    public void onPictureTaken(byte[] bytes) {
+                        Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        DataController.SaveEmployeeImageToDatabase(code, image);
+
+                        textViewInstruction.setVisibility(View.VISIBLE);
+                        textViewInstructionOr.setVisibility(View.VISIBLE);
+                        buttonChangeSignInMethod.setVisibility(View.VISIBLE);
+
+                        textViewCountdown.setVisibility(View.GONE);
+                        textViewCountdown.setTextSize(0f);
+                    }
+                });
+            }
+        }.start();
     }
 }
 

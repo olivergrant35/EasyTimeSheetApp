@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Homepage"
-    android:background="#C4C4C4"
+    android:background="#ECECEC"
     android:orientation="vertical">
 
     <FrameLayout
@@ -31,6 +31,14 @@
         android:text="@string/textViewInstruction"
         android:textSize="24sp"
         android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/textViewCountDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="3"
+        android:textSize="0sp"/>
 
     <TextView
         android:id="@+id/textViewInstructionOr"
